@@ -1,16 +1,17 @@
-length_unique <-
-function(x){
+length_unique <- function(x, verbose=TRUE){
     uni <- unique(x)
     len <- length(x)
-    pos.double <- FALSE
-    pos.double.names <- NA
+    pos_double <- FALSE
+    pos_double_names <- NA
     if(length(uni) != len){
-      warning('Possible double up')
-      pos.double.xtab <- xtabs(~x)
-      pos.double.names <- names(which(pos.double.xtab>1))
-      pos.double <-TRUE
+      if (verbose) {
+         warning('Possible double up.')
+      }
+      pos_double_xtab <- xtabs(~x)
+      pos_double_names <- names(which(pos_double_xtab>1))
+      pos_double <-TRUE
     }  
     lenuni <- length(uni)
-    out<-list('lenuni'= lenuni, 'pos.double'= pos.double, 'pos.double.names'= pos.double.names)
+    out<-list('lenuni'= lenuni, 'pos_double'= pos_double, 'pos_double_names'= pos_double_names)
     return(out)
   }

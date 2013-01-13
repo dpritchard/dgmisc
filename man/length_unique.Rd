@@ -4,19 +4,22 @@
 \title{Length Unique}
 \description{Returns the number of unique elements.  Reports if there are possible double-ups and what they might be.}
 
-\usage{length_unique(x)}
+\usage{length_unique(x, verbose=TRUE)}
 
 \arguments{
   \item{x }{A vector to test for uniqueness.}
+  \item{verbose }{A logical.  Should a formal warning() be thrown.}
 }
+
 \details{
-Counts the number of unique values in \code{x}.  If the number of unique items does not equal the overall number of items then a double-up is suspected and a warning is thrown.  
+Counts the number of unique values in \code{x}.  If the number of unique items does not equal the overall number of items then a double-up is suspected.  If \code{verbose=TRUE} then a formal warning is thrown, otherwise it is up to the user to test \code{pos_double} manually.  
 }
+
 \value{
 A name list containing:
 	\item{lenuni }{The number of unique items in \code{x}}
-	\item{pos.double }{A logical denoting if double-ups were detected.}
-	\item{pos.double.names }{If \code{pos.double} is \code{TRUE}, a character string denoting the names of possible double-ups.  Otherwise \code{NA}}
+	\item{pos_double }{A logical denoting if double-ups were detected.}
+	\item{pos_double_names }{If \code{pos_double} is \code{TRUE}, a character string denoting the names of possible double-ups.  Otherwise \code{NA}}
 }
 
 \author{
