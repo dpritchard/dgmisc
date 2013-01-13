@@ -20,6 +20,7 @@ Daniel Pritchard
 
 \examples{
 cm2in(1)
+cm2in(2.54)
 
 \dontrun{
 # An A4 plot
