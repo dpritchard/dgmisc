@@ -7,7 +7,7 @@
 \usage{length_unique(x)}
 
 \arguments{
-  \item{x}{A vector to test for uniqueness.}
+  \item{x }{A vector to test for uniqueness.}
 }
 \details{
 Counts the number of unique values in \code{x}.  If the number of unique items does not equal the overall number of items then a double-up is suspected and a warning is thrown.  

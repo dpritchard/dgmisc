@@ -7,8 +7,8 @@
 \usage{se(x, na.rm=FALSE)}
 
 \arguments{
-  \item{x}{A numeric vector or an R object which is acceptable to \code{\link{sd}}.}
-  \item{na.rm}{logical. Should missing values be removed? See details for implementation.}
+  \item{x }{A numeric vector or an R object which is acceptable to \code{\link{sd}}.}
+  \item{na.rm }{logical. Should missing values be removed? See details for implementation.}
 }
 \details{
 Implemented as \eqn{se = frac{sd}{sqrt(n)}}.

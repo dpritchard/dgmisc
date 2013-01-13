@@ -7,7 +7,7 @@
 \usage{cm2in(x)}
 
 \arguments{
-  \item{x}{A numeric (as tested by \code{as.numeric}) value to be converted}
+  \item{x }{A numeric (as tested by \code{as.numeric}) value to be converted}
 }
 
 \details{
