@@ -39,6 +39,9 @@ bb_plot_spp_rich <- function(parsed_bb, samp_unit=NA, samp_year=NA, plot_to='scr
     if (!is.character(samp_year)) {
       stop('Sampling year (samp_year) must be a charater string of format "Month Year"')
     }
+    if (length(samp_year) != 1) {
+  	  stop('Sampling year (samp_year) for bb_plot_spp_rich() must be a single character string of format "Month Year".  See ?bb_plot_spp_rich for details.')
+  	}
     if (is.na(match(samp_year, unique(parsed_bb$SeasonYear)))) { 
       stop('Sampling year (samp_year) was supplied but is not actually in the data!')
     }
