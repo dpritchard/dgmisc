@@ -2,14 +2,16 @@
 
 \alias{bb_parse}
 \alias{bb_plot_ca}
-\alias{bb_plot_spp_richness}
+\alias{bb_plot_spp_rich}
 
 \title{CMLR Braun Blanquet Tools}
 \description{A collection of tools for parsing and plotting Braun Blanquet (BB) condition and abundance data from the CMLR database.}
 
-\usage{bb_parse(raw_bb, verbose = TRUE, log = FALSE)}
-\usage{bb_plot_ca(parsed_bb, samp_unit = NA, plot_to = "screen", verbose = TRUE, disturbance = FALSE)}
-\usage{bb_plot_spp_rich(parsed_bb, samp_unit = NA, samp_year = NA, plot_to = "screen", verbose = TRUE)}
+\usage{
+bb_parse(raw_bb, verbose = TRUE, log = FALSE)
+bb_plot_ca(parsed_bb, samp_unit = NA, plot_to = "screen", verbose = TRUE, disturbance = FALSE)
+bb_plot_spp_rich(parsed_bb, samp_unit = NA, samp_year = NA, plot_to = "screen", verbose = TRUE)
+}
 
 \arguments{
   \item{raw_bb }{A dataframe read directly from a \code{.csv} file from the CMLR database.  See details.}
@@ -23,7 +25,7 @@
 }
 
 \details{
-At a minimum \code{raw_bb} must contain columns named: \code{Year}, \code{Season}, \code{Date}, \code{Scientific.Name},						\code{Modified.Braun.Blanquet.Cover.Abundance.Score..1.7.'} and						\code{Condition.Score..1.5.}.  This is consistent with raw data extracted from the CMLR data on 30/12/2012.  
+At a minimum \code{raw_bb} must contain columns named: \code{Year}, \code{Season}, \code{Date}, \code{Scientific.Name},						\code{Modified.Braun.Blanquet.Cover.Abundance.Score..1.7.} and						\code{Condition.Score..1.5.}.  This is consistent with raw data extracted from the CMLR data on 30/12/2012.  
 
 \code{parsed_bb} should be the dataframe returned by \code{bb_parse}.  Note that \code{bb_parse} returns a named list, not a dataframe (see below).  The data required by the plotting functions is stored in the first slot, named 'parsed_bb'.  See the example for more information. 
 
@@ -71,7 +73,7 @@ class(out$parsed_bb)
 # Other functions won't run unless the input data is of class 'parsed.bb', but they will coerce the data via bb_parse() with a message about how this is a very bad idea.
 
 ## Plotting condition / abundance versus time plots.
-# Plot to screen
+# Plot to screen
 # Parsed data (the recommended approach):
 bb_plot_ca(out$parsed_bb, plot_to='screen', disturbance=TRUE)
 # Raw data (not recommended): 
