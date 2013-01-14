@@ -19,7 +19,7 @@
   \item{samp_unit }{For \code{bb_plot_ca} a single character string or for \code{bb_plot_spp_rich} possibly vector of character strings denoting which sampling unit(s) to plot.}
   \item{samp_year }{For \code{bb_plot_spp_rich} only. Which sampling season / year combination to plot? A single character string of the format \code{'Season Year'}.}
   \item{plot_to }{To where should the plots be sent? Must be either \code{screen} or \code{png}.}
-  \item{disturbanc e}{For \code{bb_plot_ca} only. A logical. If \code{TRUE} the the user will be prompted for disturbance start and end date(s).}
+  \item{disturbance }{For \code{bb_plot_ca} only. A logical. If \code{TRUE} the the user will be prompted for disturbance start and end date(s).}
 }
 
 \details{
@@ -27,7 +27,7 @@ At a minimum \code{raw_bb} must contain columns named: \code{Year}, \code{Season
 
 \code{parsed_bb} should be the dataframe returned by \code{bb_parse}.  Note that \code{bb_parse} returns a named list, not a dataframe (see below).  The data required by the plotting functions is stored in the first slot, named 'parsed_bb'.  See the example for more information. 
 
-If \code{samp_unit} is not supplied then it is extracted from the data.  For \code{bb_plot_ca} this must result in a single unique result.  For \code{bb_plot_spp_rich} this will result in Sampling Units to be plotted.  
+If \code{samp_unit} is not supplied, or contains an \code{NA} then the fucntion will attempt to extract this information from the data.  For \code{bb_plot_ca} this must result in a single unique result.  For \code{bb_plot_spp_rich} this will result in sampling units being plotted.  
 
 If \code{samp_year} is not supplied then it is extracted from the data.  This only applies to \code{bb_plot_spp_rich} and must result in a single unique result.
 }
