@@ -8,7 +8,7 @@
 
 \arguments{
   \item{x }{A numeric vector.}
-  \item{na.rm }{logical. Should missing values be removed? See details for implementation.}
+  \item{na.rm }{A logical. Should missing values be removed? See details for implementation.}
 }
 \details{
 If \code{na.rm=TRUE} then \code{na.rm=TRUE} is passed to \code{\link{sd}} and \emph{n} is calculated as \code{length(na.omit(x))}.  
