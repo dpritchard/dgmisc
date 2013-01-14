@@ -16,7 +16,7 @@ bb_plot_ca <- function(parsed_bb, samp_unit=NA, plot_to='screen', verbose=TRUE, 
   ##
   
   ## Check sampling unit
-  if (is.na(samp_unit)) {
+  if (any(is.na(samp_unit))) {
     samp_unit <- as.character(unique(parsed_bb$SampUnit))
     if (length(samp_unit) != 1) {
       stop('Sampling unit (samp_unit) not supplied and a single unique sampling unit could not be derived from the data.')      
