@@ -10,9 +10,11 @@
 \usage{
 bb_parse(raw_bb, verbose = TRUE, log = FALSE)
 
-bb_plot_ca(parsed_bb, samp_unit = NA, plot_to = "screen", verbose = TRUE, disturbance = FALSE)
+bb_plot_ca(parsed_bb, samp_unit = NA, plot_to = 'screen', 
+	verbose = TRUE, disturbance = FALSE)
 
-bb_plot_spp_rich(parsed_bb, samp_unit = NA, samp_year = NA, plot_to = "screen", verbose = TRUE)
+bb_plot_spp_rich(parsed_bb, samp_unit = NA, samp_year = NA, 
+	plot_to = 'screen', verbose = TRUE)
 }
 
 \arguments{
@@ -64,10 +66,12 @@ Daniel Pritchard and Gretchen Brownstein
 
 \dontrun{
 
-# Don't forget to change your working directory before you start (this is where output will go!)
-
+# Don't forget to change your working directory before you start (this is where
+# output will go!)
+# 
 # Read Data
-# Assumes data is extracted from the CMLR database. Developed with data extracted on 2012-12-30
+# Assumes data is extracted from the CMLR database. Developed with data extracted on
+# 2012-12-30
 # Choose a '.csv' file with only 1 site:
 bb_data<-read.csv(file=file.choose())
 #  Choose a '.csv' file with multiple sites.
@@ -77,9 +81,12 @@ bb_data_multi<-read.csv(file=file.choose())
 out <- bb_parse(bb_data, verbose=TRUE, log=TRUE)
 outmulti <- bb_parse(bb_data_multi, verbose=FALSE, log=FALSE)
 
-# Note that the above function returns a list.  The parsed data is in out$parsed_bb and is a dataframe with a class of 'parsed.bb'.
+# Note that the above function returns a list.  The parsed data is in out$parsed_bb
+# and is a dataframe with a class of 'parsed.bb'.
 class(out$parsed_bb)
-# Other functions won't run unless the input data is of class 'parsed.bb', but they will coerce the data via bb_parse() with a message about how this is a very bad idea.
+# Other functions won't run unless the input data is of class 'parsed.bb', but they
+# will coerce the data via bb_parse() with a message about how this is a very bad
+# idea.
 
 ## Plotting condition / abundance versus time plots.
 # Plot to screen
@@ -94,10 +101,11 @@ bb_plot_ca(out$parsed_bb, plot_to='png')
 to_plot <- as.character(unique(outmulti$parsed_bb$SampUnit))
 for (a in 1:length(to_plot)) {
 	bb_plot_ca(outmulti$parsed_bb, plot_to='png', samp_unit=to_plot[a])
-	}
+}
 
 ## Plotting 'species richness' bar graphs
-bb_plot_spp_rich(outmulti$parsed_bb, samp_year='Autumn 2012', samp_unit=c('WW02', 'WW03','WW04'), plot_to='screen')
+bb_plot_spp_rich(outmulti$parsed_bb, samp_year='Autumn 2012', samp_unit=c('WW02',
+'WW03','WW04'), plot_to='screen')
 }
 
 }

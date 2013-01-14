@@ -16,7 +16,7 @@ Counts the number of unique values in \code{x}.  If the number of unique items d
 }
 
 \value{
-A name list containing:
+A named list containing:
 	\item{lenuni }{The number of unique items in \code{x}}
 	\item{pos_double }{A logical denoting if double-ups were detected.}
 	\item{pos_double_names }{If \code{pos_double} is \code{TRUE}, a character string denoting the names of possible double-ups.  Otherwise \code{NA}}

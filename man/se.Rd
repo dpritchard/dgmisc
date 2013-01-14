@@ -11,9 +11,7 @@
   \item{na.rm }{logical. Should missing values be removed? See details for implementation.}
 }
 \details{
-Implemented as: \eqn{se = frac{sd}{sqrt(n)}}.
-
-If \code{na.rm=TRUE} then \code{na.rm=TRUE} is passed to \code{\link{sd}} and \eqn{n} is calculated as \code{length(na.omit(x))}.  
+If \code{na.rm=TRUE} then \code{na.rm=TRUE} is passed to \code{\link{sd}} and \emph{n} is calculated as \code{length(na.omit(x))}.  
 
 Note this might have unexpected consequences for matrixes or dataframes, which is why \code{x} MUST be a vector.    
 }
@@ -27,9 +25,9 @@ Daniel Pritchard
 
 \examples{
 data <- c(1,2,3,4,5)
-se(data)
+se(data) # 0.7071068
 
 data_na <- c(1,2,3,4,NA)
 se(data_na) # NA
-se(data_na, na.rm=TRUE)
+se(data_na, na.rm=TRUE) # 0.6454972
 }

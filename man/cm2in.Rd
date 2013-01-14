@@ -1,8 +1,8 @@
 \name{cm2in}
 \alias{cm2in}
 
-\title{Convert centimeters to inches}
-\description{A useful utility function when plotting if, like most in the western world, you have no concept of 'inches'}
+\title{Convert centimeters to inches} \description{A useful utility function when
+plotting if, like most in the western world, you have no concept of 'inches'}
 
 \usage{cm2in(x)}
 

@@ -4,7 +4,8 @@
 \docType{package}
 \title{Miscellaneous R functions for research}
 
-\description{This package provides a vehicle for documenting, distributing and maintaining otherwise disjointed bits of code used for research.
+\description{This package provides a vehicle for documenting, distributing and
+maintaining otherwise disjointed bits of code used for research.
 }
 
 \details{
@@ -18,8 +19,9 @@ License: \tab GPL-2\cr
 
 }
 \author{
-Code contributed by:
-Daniel Pritchard, Gretchen Brownstein
+Code contributed by: Daniel Pritchard, Gretchen Brownstein
 
-Package maintained by Daniel Pritchard (www.pritchard.co) and hosted on GitHub (https://github.com/dpritchard/dgmisc)
+Package maintained by Daniel Pritchard (www.pritchard.co) 
+
+Hosted on GitHub (https://github.com/dpritchard/dgmisc)
 }
