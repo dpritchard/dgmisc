@@ -91,13 +91,13 @@ bb_plot_ca(bb_data, plot_to='screen')
 bb_plot_ca(out$parsed_bb, plot_to='png')
 
 # Example code for batch processing of data:
-to_plot <- as.character(unique(outmulti$SampUnit))
+to_plot <- as.character(unique(outmulti$parsed_bb$SampUnit))
 for (a in 1:length(to_plot)) {
-	bb_plot_ca(outmulti, plot_to='png', samp_unit=to_plot[a])
+	bb_plot_ca(outmulti$parsed_bb, plot_to='png', samp_unit=to_plot[a])
 	}
 
 ## Plotting 'species richness' bar graphs
-bb_plot_spp_rich(outmulti, samp_year='Autumn 2012', samp_unit=c('WW02', 'WW03','WW04'), plot_to='screen')
+bb_plot_spp_rich(outmulti$parsed_bb, samp_year='Autumn 2012', samp_unit=c('WW02', 'WW03','WW04'), plot_to='screen')
 }
 
 }
