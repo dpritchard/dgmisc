@@ -19,7 +19,7 @@ bb_plot_spp_rich(parsed_bb, samp_unit = NA, samp_year = NA, plot_to = "screen", 
   \item{raw_bb }{A dataframe read directly from a \code{.csv} file from the CMLR database.  See details.}
   \item{verbose }{A logical. Should output be printed to screen?}
   \item{log }{A logical. Should output be logged to file?}
-  \item{parsed_bb }{A dataframe of class parsed.bb (i.e. returned by \code{bb_parse}). If raw data is passed it will be run through \code{bb_parse} with a \code{message} printed to screen.}
+  \item{parsed_bb }{A dataframe of class \code{parsed.bb} (i.e. that returned by \code{bb_parse}). If raw data is passed it will be run through \code{bb_parse} with an unavoidable message printed to screen.}
   \item{samp_unit }{Which sampling unit(s) to plot? For \code{bb_plot_ca} a single character string. For \code{bb_plot_spp_rich} a single character string or a vector of character strings.}
   \item{samp_year }{Which sampling season / year combination to plot? A single character string of the format \code{'Season Year'}.}
   \item{plot_to }{To where should the plots be sent? Must be either \code{screen} or \code{png}.}
