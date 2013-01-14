@@ -1,9 +1,10 @@
 se <- function(x, na.rm=FALSE){
+	if (!is.vector(x)){
+		stop("'x' must be a vector. See ?se for further information.")
 	if(na.rm){
-	lenx <- length(na.omit(x))
+		se <- sd(x, na.rm=TRUE)/sqrt(length(na.omit(x)))
 	} else {
-	lenx <- length(x)
+		se <- sd(x)/sqrt(length(x))
 	}
-	se <- sd(x)/sqrt(lenx)
 	return(se)
 }
