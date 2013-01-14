@@ -17,5 +17,3 @@ If you'd like to contribute, please read [Hadley Wickham's style guide][hwsg] be
 [dpcontact]: http://www.pritchard.co/contact
 [hwsg]: https://github.com/hadley/devtools/wiki/Style
 
-
-
