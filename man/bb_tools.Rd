@@ -74,8 +74,8 @@ bb_data<-read.csv(file=file.choose())
 bb_data_multi<-read.csv(file=file.choose()) 
 
 ## Parse data
-out <- bb_parse(bb_data, verbose=T, log=TRUE)
-outmulti <- bb_parse(bb_data_multi, verbose=TRUE, log=FALSE)
+out <- bb_parse(bb_data, verbose=TRUE, log=TRUE)
+outmulti <- bb_parse(bb_data_multi, verbose=FALSE, log=FALSE)
 
 # Note that the above function returns a list.  The parsed data is in out$parsed_bb and is a dataframe with a class of 'parsed.bb'.
 class(out$parsed_bb)
