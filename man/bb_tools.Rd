@@ -33,7 +33,7 @@ At a minimum \code{raw_bb} must contain columns named:
 
 This is consistent with raw data extracted from the CMLR database on 30/12/2012.  
 
-\code{parsed_bb} should be the dataframe returned by \code{bb_parse}.  Note that \code{bb_parse} returns a named list, not a dataframe (see below).  The data required by the plotting functions is stored in the first slot, named 'parsed_bb'.  See the example for guidance on how to access it. 
+\code{parsed_bb} should be the dataframe returned by \code{bb_parse}.  Note that \code{bb_parse} returns a named list, not a dataframe (see below).  The data required by the plotting functions is stored in the first slot, named \code{parsed_bb}.  See the example for guidance on how to access it. 
 
 If \code{samp_unit} is not supplied, or contains an \code{NA} then the functions will attempt to extract this information from the data.  For \code{bb_plot_ca} this must result in a single unique result.  For \code{bb_plot_spp_rich} this will result in sampling units being plotted.  
 
