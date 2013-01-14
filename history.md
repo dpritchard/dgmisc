@@ -1,4 +1,35 @@
 # Development History
 
-This file documents additional information not yet ported to, nor ever very likely to be ported to the main R documentation.   
+This file documents additional information not yet ported to, nor ever very likely to be ported to, the main R documentation.   
+
+
+## bb_parse.R
+```
+v. 1.0 	2013-01-06, DP and GB
+		Initial development
+v. 1.1	2013-01-14, DP
+		Major refactoring for package.  Name change from parse.bb.ca.
+```
+
+## bb_plot_ca.R
+```
+v. 1.0	2012-12-30, GB and DP 
+		Initial coding and development.
+v. 1.1	2013-01-06, DP
+		Refactoring for external parsing function.
+v. 1.2	2013-01-10, GB
+		Added disturbance as an input so as has timepoints with mine water discharge or undermining could be highlighted in plot
+v. 1.3	2013-01-14, DP
+		Significant refactoring for inclusion in package.  Name change from plot.bb.ca.
+```
+
+## bb_plot_spp_rich.R
+```
+v. 1.0 	2013-01-03, GB
+		Initial development
+v. 1.1	2013-01-14, DP
+		Major refactoring for package.  
+		Code cleanup. Name change from plot.bb.spp.rich
+		Proportional width of PNG based on number of sampling units.
+```
 
