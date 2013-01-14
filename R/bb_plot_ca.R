@@ -22,9 +22,12 @@ bb_plot_ca <- function(parsed_bb, samp_unit=NA, plot_to='screen', verbose=TRUE, 
       stop('Sampling unit (samp_unit) not supplied and a single unique sampling unit could not be derived from the data.')      
     }	
   } else {
-    if (!is.character(samp_unit)) {
+  	if (!is.character(samp_unit)) {
       stop('Sampling unit (samp_unit) must be a charater string')
     }
+    if (length(samp_unit) != 1) {
+  	  stop('Sampling unit (samp_unit) for bb_plot_ca() must be a single character string.  See ?bb_plot_ca for details.')
+  	}
     if (is.na(match(samp_unit, unique(parsed_bb$SampUnit)))) { 
       stop('Sampling unit (samp_unit) was supplied but is not actually in the data!')
     }
