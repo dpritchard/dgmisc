@@ -24,10 +24,10 @@ Daniel Pritchard
 }
 
 \examples{
-data <- c(1,2,3,4,5)
-se(data) # 0.7071068
+dat <- c(1,2,3,4,5)
+se(dat) # 0.7071068
 
-data_na <- c(1,2,3,4,NA)
-se(data_na) # NA
-se(data_na, na.rm=TRUE) # 0.6454972
+dat_na <- c(1,2,3,4,NA)
+se(dat_na) # NA
+se(dat_na, na.rm=TRUE) # 0.6454972
 }
