@@ -16,38 +16,40 @@ NLL.rogers = function(a, h, T, P, initial, killed) {
  	}
 
 ## Statistic function. For Bootstraping using the boot library. ##
-statistic<-function(data,sample) {
-	data <- data[sample,]
+statistic<-function(data,samp) {
+	samp <- sort(samp)
+	data <- data[samp,]
 	initial <- data$density
 	killed <- data$eaten
 	try.FFR.rogers <- try(mle2(NLL.rogers, start = list(a = 1.2, h = 0.015), data = list(T = 1, P = 1, initial = initial, killed = killed)), silent=T) ## Remove 'silent=T' for more verbose output
 	if (inherits(try.FFR.rogers, "try-error")){
  		# The fit failed...
- 		out = c(NA, NA, sample)
+ 		out = c(NA, NA, samp)
  		return(out)
  	} else {
- 		out = c(coef(try.FFR.rogers)['a'], coef(try.FFR.rogers)['h'], sample)
+ 		out = c(coef(try.FFR.rogers)['a'], coef(try.FFR.rogers)['h'], samp)
  		return(out)
  	}
 }	
 ## -- ##
 
 ## Statistic function. For Bootstraping using the boot library when using snow-based parallisation. ##
-statistic_snow<-function(data,sample) {
+statistic_snow<-function(data,samp) {
+  samp <- sort(samp)
   library(emdbook)
   library(bbmle)
   library(boot)
   source("bootstrapping_funcs.R")
-  data <- data[sample,]
+  data <- data[samp,]
   initial <- data$density
   killed <- data$eaten
   try.FFR.rogers <- try(mle2(NLL.rogers, start = list(a = 1.2, h = 0.015), data = list(T = 1, P = 1, initial = initial, killed = killed)), silent=T) ## Remove 'silent=T' for more verbose output
   if (inherits(try.FFR.rogers, "try-error")){
     # The fit failed...
-    out = c(NA, NA, sample)
+    out = c(NA, NA, samp)
     return(out)
   } else {
-    out = c(coef(try.FFR.rogers)['a'], coef(try.FFR.rogers)['h'], sample)
+    out = c(coef(try.FFR.rogers)['a'], coef(try.FFR.rogers)['h'], samp)
     return(out)
   }
 }	
