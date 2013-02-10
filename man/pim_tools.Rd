@@ -10,7 +10,7 @@
   \item{file }{A string specifying a filename to read and process.}
 }
 \details{
-   Currently this tool box contains just one function: \code{pim_read}.
+   Currently this toolbox contains just one function: \code{pim_read}.
    
    \code{pim_read} takes data-forms filled out in the field and returns the information they contain in a sensible long-format dataframe.  
    
