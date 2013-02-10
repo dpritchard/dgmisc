@@ -18,30 +18,36 @@
    
    Several internal checks must be passed for the function to run.  A failure of these checks will print an error to screen detailing the file and the error.  Currently these check cannot be circumvented.  The specific tests that must be passed are (in order):
    \itemize{
-   \item First two columns of data must be strings. They are assumed to be the FieldName and the ScientificName.
-   \item If there is somenthing in the first two columns (\emph{i.e.} a species) then this must have data associated with it at some point in the file.  
-   \item If there are data in a row, it must have at least one of the first two columns filled (\emph{i.e.} it must have a FieldName or a ScientificName associated with it.).
+   \item First two columns of data must be strings and must not be blank. They are assumed to be the FieldName and the ScientificName.
+   \item If there is something in the first two columns (\emph{i.e.} a species) then this must have data associated with it at some point in the file.  
+   \item If there are data in a row, it must have at the first two columns filled out (\emph{i.e.} it must have a FieldName or a ScientificName associated with it.).
    \item There can be no blank columns in the middle of the dataset.
    \item The first two columns must be read by R as strings (\emph{i.e.} they cannot be all numeric codes).  If they are deemed to be numeric values then this is perceived as an error.  
    \item Cell A1 must look something like the phrase 'Sampling Unit' and cell A2 cannot be blank.
-   \item Cell A2 must look somehting like the word 'Date' and cell B2 cannot be blank.
-   \item Cell A3 must look somehting like the word 'Assessor' and cell B3 cannot be blank.  
-   \item Cell A4 must look somehting like the phrase 'Transect No.' and cell B4 must be able to be coerced to an integer.  
-   \item Steps must be labelled sequentially from 1 to n and n must match with the number of data colected (\emph{i.e.} if there are n steps, there must be n*2 data columns.)
+   \item Cell A2 must look something like the word 'Date' and cell B2 cannot be blank.
+   \item Cell A3 must look something like the word 'Assessor' and cell B3 cannot be blank.  
+   \item Cell A4 must look something like the phrase 'Transect No.' and cell B4 must be able to be coerced to an integer.  
+   \item Steps must be labelled sequentially from 1 to n and n must match with the number of data collected (\emph{i.e.} if there are n steps, there must be n*2 data columns.)
    \item There must be an equal number of strata and condition scores and their column headers must be 's' and 'c' (in that order).
    }
    
-   Essentially the file head should look like this:
+   Essentially the file head should look something like this:
    \tabular{lllllll}{
    	\tab 1 \tab 2 \tab 3 \tab 4 \tab 5 \tab 6 \cr
-    A \tab PIMs stratum (s) \ldots \cr
-    B \tab Sampling unit \tab BNS01 \cr
-    C \tab Date \tab 19/10/2012 \cr
-    D \tab Assessor \tab DP \cr
-    E \tab Transect No. \tab 1 \cr
-    F \tab Step \tab \tab 1 \cr
-    G \tab Field name \tab Scientific name \tab s \tab c \tab s \tab c \cr
-    H \tab Lept_gran \tab Leptospermum grandifolium \tab 1 \tab 4 \tab 1 \tab 3 \cr
+   	\tab---------------------
+    \tab---------------------
+    \tab---------------------
+    \tab---------------------
+    \tab---------------------
+    \tab---------------------\cr
+    A |\tab PIMs stratum \ldots \cr
+    B |\tab Sampling unit \tab BNS01 \cr
+    C |\tab Date \tab 19/10/2012 \cr
+    D |\tab Assessor \tab DP \cr
+    E |\tab Transect No. \tab 1 \cr
+    F |\tab Step \tab \tab 1 \cr
+    G |\tab Field name \tab Scientific name \tab s \tab c \tab s \tab c \cr
+    H |\tab Lept_gran \tab Leptospermum \tab 1 \tab 4 \tab 1 \tab 3 \cr
   }
    
    

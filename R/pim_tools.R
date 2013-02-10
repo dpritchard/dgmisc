@@ -12,11 +12,15 @@ pim_read<-function(file){
     }
     
     #dropping rowing with no species names 
+    if(any(datacore[,c(1,2)]=='')) {
+        stop(cat(file,': There are blanks in the first two columns. May be missing species names?', sep=''))
+    }
+    
     nbr<-which(datacore[,1]!=''&datacore[,2]!='')
     br<-which(datacore[,1]==''&datacore[,2]=='')
     
     if(!length(nbr)==max(nbr)){
-        stop(cat(file,": Blank rows, may be missing species names.", sep=''))
+        stop(cat(file,": Blank rows. May be missing species names?", sep=''))
     }
     
     #checking that dropped rows didn't contain data
