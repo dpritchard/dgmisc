@@ -23,31 +23,31 @@
    \item If there are data in a row, it must have at the first two columns filled out (\emph{i.e.} it must have a FieldName or a ScientificName associated with it.).
    \item There can be no blank columns in the middle of the dataset.
    \item The first two columns must be read by R as strings (\emph{i.e.} they cannot be all numeric codes).  If they are deemed to be numeric values then this is perceived as an error.  
-   \item Cell A1 must look something like the phrase 'Sampling Unit' and cell A2 cannot be blank.
-   \item Cell A2 must look something like the word 'Date' and cell B2 cannot be blank.
-   \item Cell A3 must look something like the word 'Assessor' and cell B3 cannot be blank.  
-   \item Cell A4 must look something like the phrase 'Transect No.' and cell B4 must be able to be coerced to an integer.  
+   \item Cell A2 must look something like the phrase 'Sampling Unit' and cell B2 cannot be blank.
+   \item Cell A3 must look something like the word 'Date' and cell B3 cannot be blank.
+   \item Cell A4 must look something like the word 'Assessor' and cell B4 cannot be blank.  
+   \item Cell A5 must look something like the phrase 'Transect No.' and cell B5 must be able to be coerced to an integer.  
    \item Steps must be labelled sequentially from 1 to n and n must match with the number of data collected (\emph{i.e.} if there are n steps, there must be n*2 data columns.)
    \item There must be an equal number of strata and condition scores and their column headers must be 's' and 'c' (in that order).
    }
    
    Essentially the file head should look something like this:
    \tabular{lllllll}{
-   	\tab 1 \tab 2 \tab 3 \tab 4 \tab 5 \tab 6 \cr
+   	\tab A \tab B \tab C \tab D \tab E \tab F \cr
    	\tab---------------------
     \tab---------------------
     \tab---------------------
     \tab---------------------
     \tab---------------------
     \tab---------------------\cr
-    A |\tab PIMs stratum \ldots \cr
-    B |\tab Sampling unit \tab BNS01 \cr
-    C |\tab Date \tab 19/10/2012 \cr
-    D |\tab Assessor \tab DP \cr
-    E |\tab Transect No. \tab 1 \cr
-    F |\tab Step \tab \tab 1 \cr
-    G |\tab Field name \tab Scientific name \tab s \tab c \tab s \tab c \cr
-    H |\tab Lept_gran \tab Leptospermum \tab 1 \tab 4 \tab 1 \tab 3 \cr
+    1 |\tab PIMs stratum \ldots \cr
+    2 |\tab Sampling unit \tab BNS01 \cr
+    3 |\tab Date \tab 19/10/2012 \cr
+    4 |\tab Assessor \tab DP \cr
+    5 |\tab Transect No. \tab 1 \cr
+    6 |\tab Step \tab \tab 1 \cr
+    7 |\tab Field name \tab Scientific name \tab s \tab c \tab s \tab c \cr
+    8 |\tab Lept_gran \tab Leptospermum \tab 1 \tab 4 \tab 1 \tab 3 \cr
   }
    
    
