@@ -12,3 +12,5 @@ Thumbs.db
 .Rproj.user
 
 *.history
+
+/dev_data/*
