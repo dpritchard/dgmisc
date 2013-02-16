@@ -12,3 +12,8 @@ Thumbs.db
 .Rproj.user
 
 *.history
+<<<<<<< HEAD
+=======
+
+/dev_data/*
+>>>>>>> master
