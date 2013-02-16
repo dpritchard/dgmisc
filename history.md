@@ -33,3 +33,11 @@ v. 1.1	2013-01-14, DP
 		Proportional width of PNG based on number of sampling units.
 ```
 
+## pim_read.R
+```
+v. 1.0	2013-02-07, GB and DP
+		PIMs analysis workflow 
+		Starting point: field data sheet
+		End point: data in long format
+```
+
