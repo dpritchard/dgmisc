@@ -1,4 +1,5 @@
 \name{fr_fit}
+\alias{fr_fit}
 
 \title{Fit predator-prey functional responses.}
 \description{DESCRIPTION}
@@ -30,4 +31,6 @@ Daniel Pritchard
 
 \examples{
 # TODO
+# dat = read.csv('../dev_data/BootStrapData/Simulid.csv')
+# out <- fr_fit(eaten~density, data=dat, response=rogersII, start=list(a = 1.2, h = 0.015), fixed=list(P=1, T=1), boot=T)
 }

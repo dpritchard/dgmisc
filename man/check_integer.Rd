@@ -1,4 +1,5 @@
 \name{check_integer}
+\alias{check_integer}
 
 \title{Check if a number is an integer}
 \description{Uses \code{grep} to test if the object contains only numbers.}

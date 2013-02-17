@@ -10,7 +10,7 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
 	call <- match.call()
 	mf <- match.call(expand.dots = FALSE)
 	mf_list <- as.list(mf)
-	expandmod <- terms(formula(mf_list$formula), data=dat)
+	expandmod <- terms(formula(mf_list$formula), data=data)
 	expandform <- formula(expandmod)
 	leftside <- all.vars(expandform[[2]])
 	rightside <- all.vars(expandform[[3]])
