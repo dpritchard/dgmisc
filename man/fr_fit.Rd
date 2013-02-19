@@ -9,7 +9,7 @@
 \arguments{
   \item{formula }{DESC.}
   \item{data }{DESC.}
-  \item{response }{DESC.}
+  \item{response }{Should be a string, can be a function.}
   \item{start }{DESC.}
   \item{fixed }{DESC.}
   \item{boot }{DESC.}

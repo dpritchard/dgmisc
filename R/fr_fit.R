@@ -31,7 +31,7 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
     }
     
     # Check we can deal with the requested response
-    resp_known =names(fr_responses())
+    resp_known <- names(fr_responses())
     resp_check <- match(response, resp_known, 0L)
     if(resp_check==0){
     	stop("'response' not recognised. Use fr_responses(show=T) to see what has been implemented.")
@@ -79,7 +79,7 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
     # Bootstrapping
 	if(boot){
     	# Setup output
-    	class(out) <- c(class(out), 'fr_boot')
+    	class(out) <- c('fr_boot', class(out))
   		
     	# Figure out what to do about parallel processing
     	if(para){
@@ -122,7 +122,7 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
     # Not bootstrapping
     } else {
     	# Setup output
-    	class(out) <- c(class(out), 'fr_fit')
+    	class(out) <- c('fr_fit', class(out))
     	
     	# In this instance, the sample is just the data itself...
     	samp=c(1:nrow(moddata))
@@ -131,11 +131,10 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
     	# rogersII
     	if(response=='rogersII'){
     		frout <- rogersII_fit(data=moddata, samp=c(1:nrow(moddata)), start=start, fixed=fixed)
-    		if(size(frout,1)>1){stop('Fit function returned more than one row. This should be impossible!')}
-    		out[['a0']] <- as.numeric(frout['a'])
-    		out[['h0']] <- as.numeric(frout['h'])
+    		out[['a0']] <- as.numeric(coef(frout)['a'])
+    		out[['h0']] <- as.numeric(coef(frout)['h'])
     		out[['sample']] <- samp
-    		if(is.na(out$a0) || is.na(out$h0)){stop('The fit failed.  Try some different starting values?')}
+    		out[['fit']] <- frout
     	# No function
     	} else {
     		stop('Unknown function.  This should be impossible!')
@@ -154,3 +153,13 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
     }
     return(out)
 }
+
+## Methods
+print.fr_fit <- function(fr_fit_obj){
+    return(print(fr_fit_obj$fit)) # Returning print() is bad? MLE2 is S4
+}
+
+# summary.fr_fit <- function(fr_fit_obj){
+    # return(print(summary(fr_fit_obj$fit)))
+# }
+
