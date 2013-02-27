@@ -6,7 +6,7 @@ This file documents additional information not yet ported to, nor ever very like
 ## bb_parse.R
 ```
 v. 1.0 	2013-01-06, DP and GB
-		Initial development
+		Initial development.
 v. 1.1	2013-01-14, DP
 		Major refactoring for package.  Name change from parse.bb.ca.
 ```
@@ -18,7 +18,7 @@ v. 1.0	2012-12-30, GB and DP
 v. 1.1	2013-01-06, DP
 		Refactoring for external parsing function.
 v. 1.2	2013-01-10, GB
-		Added disturbance as an input so as has timepoints with mine water discharge or undermining could be highlighted in plot
+		Added disturbance as an input so as has timepoints with mine water discharge or undermining could be highlighted in plot.
 v. 1.3	2013-01-14, DP
 		Significant refactoring for inclusion in package.  Name change from plot.bb.ca.
 ```
@@ -26,7 +26,7 @@ v. 1.3	2013-01-14, DP
 ## bb_plot_spp_rich.R
 ```
 v. 1.0 	2013-01-03, GB
-		Initial development
+		Initial development.
 v. 1.1	2013-01-14, DP
 		Major refactoring for package.  
 		Code cleanup. Name change from plot.bb.spp.rich
@@ -36,8 +36,12 @@ v. 1.1	2013-01-14, DP
 ## pim_read.R
 ```
 v. 1.0	2013-02-07, GB and DP
-		PIMs analysis workflow 
-		Starting point: field data sheet
-		End point: data in long format
+		PIMs analysis workflow.
+		Starting point: field data sheet.
+		End point: data in long format.
+v. 1.1	2013-02-27, GB
+		Modifications to the output file (order of columns).
+		Adding three new columns: Year, Season, Method Code 
+		to the alldata and allmeta data output files.
 ```
 

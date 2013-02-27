@@ -4,10 +4,12 @@
 \title{CMLR Point Intercept Method Tools}
 \description{A collection of tools for dealing with Point Intercept Method (PIM) data.}
 
-\usage{pim_read(file)}
+\usage{pim_read(file, samp_year=NA, samp_season=NA)}
 
 \arguments{
   \item{file }{A string specifying a filename to read and process.}
+  \item{samp_year }{An integer or string.  The sampling year}
+  \item{samp_season }{A string.  The sampling season e.g. 'Summer'}
 }
 \details{
    Currently this toolbox contains just one function: \code{pim_read}.
@@ -67,6 +69,8 @@ Gretchen Brownstein and Daniel Pritchard
 
 \section{todo}{
     \itemize{
+    \item Make date dynamic.
+    \make Methods code dynamic.
     \item Enforce the 6-row rule.
     \item Check date formatting. Return an R date.
     \item Allow free-format metadata in key:value pairs (odd columns = key; even columns = value).
