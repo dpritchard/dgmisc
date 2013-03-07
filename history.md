@@ -43,5 +43,9 @@ v. 1.1	2013-02-27, GB
 		Modifications to the output file (order of columns).
 		Adding three new columns: Year, Season, Method Code 
 		to the alldata and allmeta data output files.
+v. 1.2	2013-03-07 GB
+		7/03/13
+		Corrected the output: Species/steps now match with strata/condition!
+		Minor change: CJ no longer wants season or year, so have removed!
 ```
 

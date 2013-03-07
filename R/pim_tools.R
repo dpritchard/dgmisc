@@ -1,6 +1,6 @@
-# pim_read v. 1.1
+# pim_read v. 1.2
 
-pim_read<-function(file, samp_year=NA, samp_season=NA){
+pim_read<-function(file){
   require(stringr)
   #get a field data
   datacore <- read.csv(file=file, skip=6, stringsAsFactors=F)
@@ -117,35 +117,31 @@ pim_read<-function(file, samp_year=NA, samp_season=NA){
   datout = NULL
   metadatout = NULL
   
-  outsamp_year <- samp_year
-  outsamp_season <- samp_season
   outmeth <- 'PIM'
   outmsu <- str_trim(datameta[1,2])
   outmdate <- str_trim(datameta[2,2])
   outmass <- str_trim(datameta[3,2])
   outmtrans <- as.integer(str_trim(datameta[4,2]))
   
-  metadataout <- data.frame('Year' = outsamp_year, 'Season' = outsamp_season, 'MethodCode' = outmeth, 'SamplingUnit' = outmsu, 'Date' = outmdate, 'Assessor'= outmass, 'TransectNo' = outmtrans, stringsAsFactors=F)
+  metadataout <- data.frame('MethodCode' = outmeth, 'SamplingUnit' = outmsu, 'Date' = outmdate, 'Assessor'= outmass, 'TransectNo' = outmtrans, stringsAsFactors=F)
   
   outnrow <- steps*nrow(dat)
-  outsamp_year <- rep(samp_year, times=outnrow)
-  outsamp_season <-rep(samp_season, times=outnrow)
   outmeth <- rep('PIM', times=outnrow)
   outsu <- rep(outmsu, times=outnrow)
   outdate <- rep(outmdate, times=outnrow)
   outass <- rep(outmass, times=outnrow)
   outtrans <- rep(outmtrans, times=outnrow)
   
-  outsteps <- rep(real_steps, times=nrow(dat))
-  outoldspp <- rep(dat[,1], each=steps)
-  outnewspp <- rep(dat[,2], each=steps)
+  outsteps <- rep(real_steps, each=nrow(dat))
+  outoldspp <- rep(dat[,1], times=steps)
+  outnewspp <- rep(dat[,2], times=steps)
   scols <- seq(from=3, to=steps*2+2, by=2)
   ccols <- seq(from=4, to=steps*2+2, by=2)
   
   outs <- unlist(dat[,scols])
   outc <- unlist(dat[,ccols])
   
-  datout <- data.frame('Year' = outsamp_year, 'Season' = outsamp_season, 'MethodCode' = outmeth, 'Date' = outdate, 'SamplingUnit' = outsu, 'PlotTransect' = outtrans, 'Assessor' = outass,  'Transect' = outtrans, 'Step' = outsteps, 'Strata' = outs, 'FieldName' = outoldspp, 'ScientificName' = outnewspp,  'Condition' = outc, stringsAsFactors=F)
+  datout <- data.frame('MethodCode' = outmeth, 'Date' = outdate, 'SamplingUnit' = outsu, 'PlotTransect' = outtrans, 'Assessor' = outass,  'Transect' = outtrans, 'Step' = outsteps, 'Strata' = outs, 'FieldName' = outoldspp, 'ScientificName' = outnewspp,  'Condition' = outc, stringsAsFactors=F)
   
   out <- list('metadata' = metadataout, 'data' = datout)
   

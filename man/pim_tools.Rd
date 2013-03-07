@@ -4,12 +4,10 @@
 \title{CMLR Point Intercept Method Tools}
 \description{A collection of tools for dealing with Point Intercept Method (PIM) data.}
 
-\usage{pim_read(file, samp_year=NA, samp_season=NA)}
+\usage{pim_read(file)}
 
 \arguments{
   \item{file }{A string specifying a filename to read and process.}
-  \item{samp_year }{An integer or string.  The sampling year}
-  \item{samp_season }{A string.  The sampling season e.g. 'Summer'}
 }
 \details{
    Currently this toolbox contains just one function: \code{pim_read}.
