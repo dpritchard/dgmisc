@@ -1,8 +1,8 @@
-# bb_parse v 1.1
+# bb_parse v 1.2
 bb_parse <- function(raw_bb, verbose=TRUE, log=FALSE) {
 	## Check all required columns are present
 	# NB: If you change this, remeber to change the name reassignment below!
-	req_cols<-c('Year', 'Season', 'Date', 'Sampling.Unit', 'Scientific.Name', 'Modified.Braun.Blanquet.Cover.Abundance.Score..1.7.', 'Condition.Score..1.5.')
+	req_cols<-c('Year', 'Season', 'Date..mm.dd.yyyy.', 'Sampling.Unit', 'Scientific.Name', 'Modified.Braun.Blanquet.Cover.Abundance.Score..1.7.', 'Condition.Score..1.5.')
   	#Check all required columns are present
   	for (a in 1:length(req_cols)) {
     	if (is.na(match(req_cols[a], names(raw_bb)))) {
@@ -14,7 +14,7 @@ bb_parse <- function(raw_bb, verbose=TRUE, log=FALSE) {
   	raw_bb_sub <- raw_bb[,req_cols]
   	
   	# Sorting out column names
-  	names(raw_bb_sub)[c(4,5,6,7)]<-c('SampUnit', 'Species','Abund', 'Cond')
+  	names(raw_bb_sub)[c(3,4,5,6,7)]<-c('Date', 'SampUnit', 'Species','Abund', 'Cond')
   	
   	# Sorintg out dates
   	raw_bb_sub$RDate<-as.POSIXct(strptime(raw_bb_sub$Date, '%m/%d/%Y'))
@@ -198,7 +198,7 @@ bb_parse <- function(raw_bb, verbose=TRUE, log=FALSE) {
   	 return(out) 	
 }
 
-# bb_plot_ca v. 1.3
+# bb_plot_ca v. 1.4
 bb_plot_ca <- function(parsed_bb, samp_unit=NA, plot_to='screen', verbose=TRUE, disturbance=FALSE){
   
   require(reshape) 
@@ -258,6 +258,11 @@ bb_plot_ca <- function(parsed_bb, samp_unit=NA, plot_to='screen', verbose=TRUE, 
   seas_labs <- unique(parsed_bb_subM[,c('Season', 'RDate')])
   seas_labs$RDate <- as.POSIXct(seas_labs$RDate, '%Y-%m-%d') 
   ## -- ##
+  
+  ## xlim for both plots.
+  xminimum <- as.POSIXct(strptime(paste('01-01-', min(parsed_bb_sub$Year), sep=''), '%d-%m-%Y'))
+  xmaximum <- as.POSIXct(strptime(paste('31-12-', max(parsed_bb_sub$Year), sep=''), '%d-%m-%Y'))
+  xlimits <- c(xminimum,xmaximum)
 
   ## Plot Setup  
   if (plot_to=='png'){
@@ -275,7 +280,7 @@ bb_plot_ca <- function(parsed_bb, samp_unit=NA, plot_to='screen', verbose=TRUE, 
   
   ## Plot Condition
   #Setup
-  with(parsed_bb_sub, plot(RDate, Cond, type='n', ylim=c(0,5.05), yaxs='i', axes=F, ann=F))
+  with(parsed_bb_sub, plot(RDate, Cond, type='n', ylim=c(0,5.05), xlim=xlimits, yaxs='i', xaxs='i', axes=F, ann=F))
   with(seas_labs, axis(1, labels=Season, at=RDate, las=2, lwd=0, lwd.ticks=1))
   mtext(side=1, text=format(dat_lab_loc, '%Y'), at=dat_lab_loc, line=4)
   axis(1, at=dat_lab_ticks, labels=NA, lwd=0, lwd.ticks=1, tcl=5, line=5)
@@ -332,9 +337,10 @@ bb_plot_ca <- function(parsed_bb, samp_unit=NA, plot_to='screen', verbose=TRUE, 
   }
   parsed_bb_subC_ord <- parsed_bb_subC[with(parsed_bb_subC, order(RDate)),]
   with(parsed_bb_subC_ord, lines(RDate, Cond, col='red', lwd=2))
+  
   ## Plot Abundance
   # Setup
-  with(parsed_bb_sub, plot(RDate, Abund, type='n', ylim=c(0,7.07), yaxs='i', axes=F, ann=F))
+  with(parsed_bb_sub, plot(RDate, Abund, type='n', ylim=c(0,7.07), xlim=xlimits, yaxs='i', xaxs='i', axes=F, ann=F))
   with(seas_labs, axis(1, labels=Season, at=RDate, las=2, lwd=0, lwd.ticks=1))
   mtext(side=1, text=format(dat_lab_loc, '%Y'), at=dat_lab_loc, line=4)
   axis(1, at=dat_lab_ticks, labels=NA, lwd=0, lwd.ticks=1, tcl=5, line=5)

@@ -9,6 +9,8 @@ v. 1.0 	2013-01-06, DP and GB
 		Initial development.
 v. 1.1	2013-01-14, DP
 		Major refactoring for package.  Name change from parse.bb.ca.
+v. 1.2	2013-03-13, GB
+		Updated the column name for 'Date' (closes issue #2).
 ```
 
 ## bb_plot_ca.R
@@ -21,6 +23,8 @@ v. 1.2	2013-01-10, GB
 		Added disturbance as an input so as has timepoints with mine water discharge or undermining could be highlighted in plot.
 v. 1.3	2013-01-14, DP
 		Significant refactoring for inclusion in package.  Name change from plot.bb.ca.
+v. 1.4	2013-03-13, GB (also DP)
+		Fixed x-axis labelling issue (closes issue #1)
 ```
 
 ## bb_plot_spp_rich.R

@@ -68,7 +68,7 @@ Gretchen Brownstein and Daniel Pritchard
 \section{todo}{
     \itemize{
     \item Make date dynamic.
-    \make Methods code dynamic.
+    \item Make methods code dynamic.
     \item Enforce the 6-row rule.
     \item Check date formatting. Return an R date.
     \item Allow free-format metadata in key:value pairs (odd columns = key; even columns = value).
