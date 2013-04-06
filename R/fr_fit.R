@@ -39,7 +39,7 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
     
     # Check start
     if(length(start)==0){
-    	stop("You didn't provide starting values. It's to fit anything without knowing what to optimise!")
+    	stop("You didn't provide starting values. It's impossible to fit anything without knowing what to optimise!")
     }
     if(any(lapply(start, length)!=1)){
     	stop("The items in start must be named numeric value of length one.")
@@ -74,7 +74,7 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
     
     ## Go time!
     # Common output
-    out <- list('call' = call, 'data' = data, 'xvar' = rightside, 'yvar' = leftside)
+    out <- list('call' = call, 'data' = data, 'response'=response, 'xvar' = rightside, 'yvar' = leftside)
     iswindows <- FALSE
     # Bootstrapping
 	if(boot){
@@ -104,7 +104,7 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
     	## Case specific fitting...
     	# rogersII
     	if(response=='rogersII'){
-    		frout <- boot(data=moddata, statistic= rogersII_fit, R=nboot, parallel=paramode, ncpus=ncores, start=start, fixed=fixed, windows=iswindows)
+    		frout <- boot(data=moddata, statistic=rogersII_fit, R=nboot, start=start, fixed=fixed, boot=TRUE, windows=iswindows, parallel=paramode, ncpus=ncores)
     		if(size(frout$t,1)!=nboot){stop("Bootstrap function didn't return nboot rows. This should be impossible!")}
     		out[['a0']] <- as.numeric(frout$t0['a'])
     		out[['h0']] <- as.numeric(frout$t0['h'])
