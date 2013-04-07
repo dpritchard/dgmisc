@@ -5,7 +5,7 @@ require(emdbook)
 require(bbmle)
 require(boot)
 
-fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FALSE, nboot=999, para=TRUE){
+fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FALSE, nboot=999, para=TRUE, WARN.ONLY=FALSE){
 	# Parse call, can check formula...
 	call <- match.call()
 	mf <- match.call(expand.dots = FALSE)
@@ -145,9 +145,13 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
     if(inherits(out, 'fr_boot')){
     	prop_fail <- out[['n_failed']]/out[['n_boot']]
     	if(prop_fail>0.5){
-    		out <- NULL
-    		stop('More than 50% of the fits failed. This is an error.  Nothing will be returned.')
-    	} else if(prop_fail>0.1){
+    		out <- NA
+            if(WARN.ONLY){
+                warning('More than 50% of the fits failed. This is an error.  Nothing will be returned.')
+            } else {
+                stop('More than 50% of the fits failed. This is an error.  Nothing will be returned.')
+            }
+    	} else if(prop_fail>0.1) {
     		warning('More than 10% of the fits failed. Suggest careful consideration of the output.')
     	}
     }
