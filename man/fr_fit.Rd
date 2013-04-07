@@ -6,13 +6,15 @@
 \description{Fits predator-prey function responses and returns data in a consistent, predictable way, exposing some useful methods.}
 
 \usage{
-fr_fit(formula, data, response, start=list(), fixed=list(), boot=FALSE, nboot=999, para=TRUE, WARN.ONLY=FALSE)
+fr_fit(formula, data, response, start=list(), fixed=list(), 
+        boot=FALSE, nboot=999, para=TRUE, WARN.ONLY=FALSE)
+
 \method{print}{fr_fit}(x, \dots)
 }
 
 \arguments{
-  \item{formula }{A simple formula of the form Y~X.}
-  \item{data }{The dataframe containing X and Y in the formula.}
+  \item{formula }{A simple formula of the form \code{y ~ x}.}
+  \item{data }{The dataframe containing \code{x} and \code{y}.}
   \item{response }{A string denoting the response to fit.  See Details.}
   \item{start }{A named list. Starting values for optimised parameters.}
   \item{fixed }{A named list. Values that are not optimised.}
@@ -38,24 +40,21 @@ If more than 10\% of the bootstrapped fits fail then a warning is generated and 
 This function returns a named list of class \code{fr_fit} or \code{fr_boot}, depending on the way in which the function is called.
 
 Lists of class \code{fr_fit} have the following named items:
-\itemize{
-  \item{call }{The original call to \code{fr_fit}.}
-  \item{data }{The original data supplied to \code{fr_fit}.}
-  \item{response }{A string. The fitted response.}
-  \item{xvar }{A string. The righthand side of \code{formula}.}
-  \item{yvar }{A string. The lefthand side of \code{formula}.}
-  \item{fit }{The raw object returned by the fitting procedure (response specific).}
-}
+\item{call }{The original call to \code{fr_fit}.}
+\item{data }{The original data supplied to \code{fr_fit}.}
+\item{response }{A string. The fitted response.}
+\item{xvar }{A string. The righthand side of \code{formula}.}
+\item{yvar }{A string. The lefthand side of \code{formula}.}
+\item{fit }{The raw object returned by the fitting procedure (response specific).}
+
 
 In addition there is a named item for each fitted parameter (\emph{i.e.} those supplied in \code{start}), suffixed with a zero, containing the parameter estimate for the curve fitted to the original dataset.  
 
 With the exception of the \code{fit} item, lists of class \code{fr_boot} contain everything listed above.  These objects also contain vector of \code{length(nboot)} containing each of the bootstrapped parameter estimates along with:
-\itemize{
-  \item{sample }{An nboot-by-n matrix denoting the rows of the original data used in each of the bootstrapped fits.}
-  \item{n_failed }{The number of failed fits.}
-  \item{n_duplicated }{The number of fits that were duplicates.}
-  \item{n_boot }{The number of bootstrapped fits.}
- }
+\item{sample }{An nboot-by-n matrix. The rows of the original data used in each bootstrap.}
+\item{n_failed }{The number of failed fits.}
+\item{n_duplicated }{The number of fits that were duplicates.}
+\item{n_boot }{The number of bootstrapped fits.}
 }
 
 \section{Methods}{

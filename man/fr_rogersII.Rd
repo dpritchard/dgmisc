@@ -17,7 +17,7 @@
   \item{data }{A dataframe containing X and Y.}
   \item{samp }{A vector specifying the rows of data to use in the fit. Provided by \code{boot()} or manually, as required}
   \item{start }{A named list. Starting values for items to be optimised.  Usually 'a' and 'h'.}
-  \item{fixed }{A names list. 'Fixed data' (not optimised). Usually 'X' and 'Y' and ocassionaly 'T' and 'P'.}
+  \item{fixed }{A names list. 'Fixed data' (not optimised). Usually 'T' and 'P'.}
   \item{boot }{A logical. Is the function being called for use by the boot function?}
   \item{windows }{A logical. Is the operating system Microsoft Windows?}
   \item{a, h }{Attack rate and handling time. Often items to be optimised.}
