@@ -1,5 +1,5 @@
 \name{bb_tools}
-
+\alias{bb_tools}
 \alias{bb_parse}
 \alias{bb_plot_ca}
 \alias{bb_plot_spp_rich}

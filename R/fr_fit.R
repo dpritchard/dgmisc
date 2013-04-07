@@ -159,8 +159,8 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
 }
 
 ## Methods
-print.fr_fit <- function(fr_fit_obj){
-    return(print(fr_fit_obj$fit)) # Returning print() is bad? MLE2 is S4
+print.fr_fit <- function(x, ...){
+    return(print(x$fit)) # Returning print() is bad? MLE2 is S4
 }
 
 # summary.fr_fit <- function(fr_fit_obj){
