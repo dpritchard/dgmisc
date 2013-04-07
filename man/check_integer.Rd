@@ -15,7 +15,7 @@
 }
 
 \author{
-Originally from \link{http://stackoverflow.com/a/3937820}
+Originally from \url{http://stackoverflow.com/a/3937820}
 }
 
 \seealso{
