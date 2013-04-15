@@ -17,6 +17,7 @@ rogersII <- function(X, a, h, P, T) {
 # start = List of starting values for items to be optimised.  Usually 'a' and 'h'.
 # fixed = List of 'Fixed data' (not optimised).   Usually 'T' and 'P'
 # Note required packages are reloaded here so Windows can do parallel computing!
+# Not also that the statistic now (2013-04-13) now returns the variance 
 rogersII_fit <- function(data, samp, start, fixed, boot=FALSE, windows=FALSE) {
 	if(windows && boot){
 		dgmisc_load <- require(dgmisc, warn.conflicts=FALSE, quietly=TRUE)
@@ -34,16 +35,19 @@ rogersII_fit <- function(data, samp, start, fixed, boot=FALSE, windows=FALSE) {
 	fixed[['Y']] <- Y
 	try_rogersII <- try(mle2(rogersII_nll, start=start, data=fixed), silent=T) 
 	## Remove 'silent=T' for more verbose output
-	if (inherits(try_rogersII, "try-error")){
+	# Hard coded upper limits: TODO: Fix this, allow variable data
+	if (inherits(try_rogersII, "try-error") || as.numeric(coef(try_rogersII)['a']) > 10 || as.numeric(coef(try_rogersII)['h']) > 1){
  		# The fit failed...
- 		out = c(NA, NA, samp)
+ 		out = c(NA, NA, NA, NA, samp)
+ 		names(out) <- c('a', 'avar', 'h', 'hvar', rep('', times=length(samp)))
  		if(boot){
  			return(out)
- 		} else {
+        } else {
  			stop(try_rogersII[1])
  		}
  	} else {
- 		out = c(coef(try_rogersII)['a'], coef(try_rogersII)['h'], samp)
+ 		out = c(coef(try_rogersII)['a'], vcov(try_rogersII)['a', 'a'], coef(try_rogersII)['h'], vcov(try_rogersII)['h', 'h'], samp)
+         names(out) <- c('a', 'avar', 'h', 'hvar', rep('', times=length(samp)))
  		if(boot){
  			return(out)
  		} else {
@@ -52,7 +56,7 @@ rogersII_fit <- function(data, samp, start, fixed, boot=FALSE, windows=FALSE) {
  	}
 }	
 # rogersII_nll
-# Provides negative log-likelihoos for estimations via mle2()
+# Provides negative log-likelihood for estimations via mle2()
 # See Bowkers book for more info
 rogersII_nll <- function(a, h, T, P, X, Y) {
 	if (a < 0 || h < 0) {

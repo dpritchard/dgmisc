@@ -5,7 +5,7 @@ require(emdbook)
 require(bbmle)
 require(boot)
 
-fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FALSE, nboot=999, para=TRUE, WARN.ONLY=FALSE){
+fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FALSE, nboot=999, para=TRUE, ncores=NaN, WARN.ONLY=FALSE){
 	# Parse call, can check formula...
 	call <- match.call()
 	mf <- match.call(expand.dots = FALSE)
@@ -95,13 +95,15 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
     	}
 		
 		# TODO: Make this a little more dynamic, allow people to specify ncores
-    	ncores <- parallel:::detectCores()
+        if(para && is.nan(ncores)){
+            ncores <- parallel:::detectCores()
+        }
     	
     	# Print some output to calm people's nerves!
     	cat('\nNow bootstrapping.  Please be patient...\n')
     	flush.console()
     	
-    	## Case specific fitting...
+    	## Case specific fitting... Need to tidy this up (DP: 2013-04-13)
     	# rogersII
     	if(response=='rogersII'){
     		frout <- boot(data=moddata, statistic=rogersII_fit, R=nboot, start=start, fixed=fixed, boot=TRUE, windows=iswindows, parallel=paramode, ncpus=ncores)
@@ -109,13 +111,27 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
     		out[['a0']] <- as.numeric(frout$t0['a'])
     		out[['h0']] <- as.numeric(frout$t0['h'])
     		out[['sample']] <- frout$t[,3:size(frout$t,2)]
+    		out[['fit']] <- frout
     		out[['a']] <- frout$t[,which(names(frout$t0)=='a')]
 			out[['h']] <- frout$t[,which(names(frout$t0)=='h')]
 			out[['n_failed']] <- sum(is.na(out[['a']]))
 			out[['n_duplicated']] <- sum(duplicated(out[['sample']]))
 			out[['n_boot']] <- nboot
+		# Generic Type I
+		} 
+        else if(response=='typeI'){
+    		frout <- boot(data=moddata, statistic=typeI_fit, R=nboot, start=start, fixed=fixed, boot=TRUE, windows=iswindows, parallel=paramode, ncpus=ncores)
+    		if(size(frout$t,1)!=nboot){stop("Bootstrap function didn't return nboot rows. This should be impossible!")}
+    		out[['c0']] <- as.numeric(frout$t0['c'])
+    		out[['sample']] <- frout$t[,3:size(frout$t,2)]
+    		out[['fit']] <- frout
+    		out[['c']] <- frout$t[,which(names(frout$t0)=='c')]
+			out[['n_failed']] <- sum(is.na(out[['c']]))
+			out[['n_duplicated']] <- sum(duplicated(out[['sample']]))
+			out[['n_boot']] <- nboot
     	# No function
-    	} else {
+    	} 
+        else {
     		stop('Unknown function.  This should be impossible!')
     	}
 	
@@ -135,8 +151,16 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
     		out[['h0']] <- as.numeric(coef(frout)['h'])
     		out[['sample']] <- samp
     		out[['fit']] <- frout
+    	# Generic Type I
+    	} 
+        else if(response=='typeI'){
+    		frout <- typeI_fit(data=moddata, samp=c(1:nrow(moddata)), start=start, fixed=fixed)
+    		out[['c0']] <- as.numeric(coef(frout)['c'])
+    		out[['sample']] <- samp
+    		out[['fit']] <- frout
     	# No function
-    	} else {
+    	} 
+        else {
     		stop('Unknown function.  This should be impossible!')
     	}
     }
