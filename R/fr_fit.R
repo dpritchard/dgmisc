@@ -165,7 +165,7 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
     	}
     }
     
-    # For bootstarpped data, we need to check the number of failures
+    # For bootstrapped data, we need to check the number of failures
     if(inherits(out, 'fr_boot')){
     	prop_fail <- out[['n_failed']]/out[['n_boot']]
     	if(prop_fail>0.5){

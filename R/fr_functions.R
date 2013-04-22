@@ -19,3 +19,59 @@ fr_responses <- function(show=FALSE){
 		return(resp_known)
 	}
 }
+
+## Plotting Code
+fr_plot <- function(fr_model, plotboot=FALSE, bootlines=TRUE, alpha=NaN, ...){
+    xdat <- fr_model$data[,fr_model$xvar]
+    newx <- seq(from=0, to=max(xdat), by=0.1)
+    if(inherits(fr_model, 'fr_fit')){
+        # 'Normal' Curve Drawing
+        if(fr_model$response=='rogersII'){
+            newy <- rogersII(newx, a=fr_model$a0, h=fr_model$h0, P=fr_model$fit@data$P, T=fr_model$fit@data$T)
+        } else if(fr_model$response=='typeI'){
+            newy <- typeI(newx, c=fr_model$c0)
+        } else {
+            stop('Impossible')
+        }
+        lines(newx, newy, ...)
+    } else if(inherits(fr_model, 'fr_boot')){
+        # Setup Alpha
+        if(is.nan(alpha)){
+            alpha<-1/sqrt(fr_model$n_boot)
+        }
+        # Bootstrap lines
+        if(fr_model$response=='rogersII'){
+            #newy <- NULL
+            #bootx <- NULL
+            if(plotboot){
+                fitteda <- na.omit(fr_model$a)
+                fittedh <- na.omit(fr_model$h)
+                outdd <- matrix(nrow=length(newx), ncol=length(fitteda))
+                for(a in 1:length(fitteda)){
+                    ## Hard codes ones! Bad! Bad! Bad!
+                    outdd[,a] <- rogersII(newx, a=fr_model$a[a], h=fr_model$h[a], P=1, T=1)
+                }
+                if(bootlines){
+                    # Plot bootstrapped lines
+                    for(a in 1:ncol(outdd)){
+                        lines(newx, outdd[,a], col=rgb(0,0,0,alpha), ...)
+                    }
+                } else {
+                    # Plot patches ## Hardcoded 95%CI - TODO FIXME!
+                    dd <- apply(outdd, 1, quantile, na.rm=T, probs = c(0.025, 0.975))
+                    polygon(c(newx, rev(newx), newx[1]), c(dd[1,], rev(dd[2,]), dd[1,1]), border=NA, ...)
+                }
+            } else {
+                ## Hard codes ones! Bad! Bad! Bad! TODO FIXME!
+                newy <- rogersII(newx, a=fr_model$a0, h=fr_model$h0, P=1, T=1)
+                lines(newx, newy, ...)
+            } 
+        } else {
+            stop('Impossible')
+        }
+    }
+}
+
+
+
+
