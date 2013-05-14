@@ -33,7 +33,7 @@ The underlying fitting is response-specific and users should consult the help pa
 
 Non-parametric bootstrapping and paralellisation is handled by \code{\link{boot}} from the boot library.  Currently, if you request bootstrapped fits and \code{para=TRUE} (the default) then the function with attempt to use all available cores (which might affect performance while the bootstrap is underway!)
 
-If more than 10\% of the bootstrapped fits fail then a warning is generated and if more than 50\% of the fits fail then an error is thrown and nothing is returned.  These are sensible defaults, but if you are very sure that you know what you are doing you can suppress this error with \code{WARN.ONLY=TRUE} (a warning is thrown instead).  
+If more than 10\% of the bootstrapped fits fail then a warning is generated and if more than 50\% of the fits fail then an error is thrown and nothing is returned.  These are sensible defaults, but if you are very sure that you know what you are doing you can suppress this with \code{WARN.ONLY=TRUE} (a warning is thrown instead).  
 }
 
 \value{

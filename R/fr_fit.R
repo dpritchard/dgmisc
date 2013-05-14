@@ -94,9 +94,11 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
     		paramode = 'no'
     	}
 		
-		# TODO: Make this a little more dynamic, allow people to specify ncores
+		# Attempt to hog all cores if it isn't specified
         if(para && is.nan(ncores)){
             ncores <- parallel:::detectCores()
+        } else {
+            ncores <- floor(ncores)
         }
     	
     	# Print some output to calm people's nerves!
