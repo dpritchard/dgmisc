@@ -70,6 +70,9 @@ Daniel Pritchard
 }
 
 \examples{
-\dontrun{
+den <- c(2,2,2,2,4,4,4,4,6,6,6,6,8,8,8,8,10,10,10,10,20,20,20,20,30,30,30,30,60,60,60,60)
+eat <- c(0,2,2,2,4,4,4,4,5,6,6,3,3,8,6,5,5,3,0,7,5,14,9,7,18,4,17,8,4,16,46,13)
+dat <- data.frame(density=den, eaten=eat)
 out <- fr_fit(eaten~density, data=dat, response=rogersII, start=list(a = 1.2, h = 0.015), fixed=list(P=1, T=1), boot=FALSE)
-}}
+
+}

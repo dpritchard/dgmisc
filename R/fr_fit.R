@@ -5,7 +5,7 @@ require(emdbook)
 require(bbmle)
 require(boot)
 
-fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FALSE, nboot=999, para=TRUE, ncores=NaN, WARN.ONLY=FALSE){
+fr_fit.default <- function(formula, data, response, start=list(), fixed=list(), boot=FALSE, nboot=999, para=TRUE, ncores=NaN, WARN.ONLY=FALSE){
 	# Parse call, can check formula...
 	call <- match.call()
 	mf <- match.call(expand.dots = FALSE)
@@ -75,13 +75,13 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
     ## Go time!
     # Common output
     out <- list('call' = call, 'data' = data, 'response'=response, 'xvar' = rightside, 'yvar' = leftside)
-    iswindows <- FALSE
-    # Bootstrapping
+    ## Bootstrapping ##
 	if(boot){
     	# Setup output
     	class(out) <- c('fr_boot', class(out))
   		
     	# Figure out what to do about parallel processing
+    	iswindows <- FALSE
     	if(para){
     		os <- as.character(Sys.info()['sysname'])
     		if(is.na(match(tolower(os), 'windows'))) {
@@ -110,13 +110,15 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
     	if(response=='rogersII'){
     		frout <- boot(data=moddata, statistic=rogersII_fit, R=nboot, start=start, fixed=fixed, boot=TRUE, windows=iswindows, parallel=paramode, ncpus=ncores)
     		if(size(frout$t,1)!=nboot){stop("Bootstrap function didn't return nboot rows. This should be impossible!")}
+            #out[['coef']] <- matrix()
     		out[['a0']] <- as.numeric(frout$t0['a'])
     		out[['h0']] <- as.numeric(frout$t0['h'])
-    		out[['sample']] <- frout$t[,3:size(frout$t,2)]
+    		out[['sample']] <- frout$t[,3:size(frout$t,2)] # FIXME - Needs to be all '' columns (i.e. blank)
     		out[['fit']] <- frout
     		out[['a']] <- frout$t[,which(names(frout$t0)=='a')]
 			out[['h']] <- frout$t[,which(names(frout$t0)=='h')]
-			out[['n_failed']] <- sum(is.na(out[['a']]))
+			
+            out[['n_failed']] <- sum(is.na(out[['a']]))
 			out[['n_duplicated']] <- sum(duplicated(out[['sample']]))
 			out[['n_boot']] <- nboot
 		# Generic Type I
@@ -137,7 +139,7 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
     		stop('Unknown function.  This should be impossible!')
     	}
 	
-    # Not bootstrapping
+    ## Not bootstrapping ##
     } else {
     	# Setup output
     	class(out) <- c('fr_fit', class(out))
@@ -181,11 +183,13 @@ fr_fit <- function(formula, data, response, start=list(), fixed=list(), boot=FAL
     		warning('More than 10% of the fits failed. Suggest careful consideration of the output.')
     	}
     }
+    # Finally return our object!
     return(out)
 }
 
-## Methods
+## Methods ##
 print.fr_fit <- function(x, ...){
+    #UseMethod('print')
     return(print(x$fit)) # Returning print() is bad? MLE2 is S4
 }
 

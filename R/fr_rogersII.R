@@ -29,29 +29,50 @@ rogersII_fit <- function(data, samp, start, fixed, boot=FALSE, windows=FALSE) {
 	}
 	samp <- sort(samp)
 	data <- data[samp,]
+		
+    out <- c(rep(NA, times=length(names(start))*2), rep(NA, times=length(names(fixed))), samp)
+    outnames <- NULL
+    # Setup optimised variable output
+    for (i in 1:length(names(start))){
+        outnames <- c(outnames, names(start)[i], paste(names(start)[i], 'var', sep=''))
+    }
+	# Setup fixed variable output
+	for (i in 1:length(names(fixed))){
+	    outnames <- c(outnames, names(fixed)[i])
+	}
+	names(out) <- c(outnames, rep('', times=length(samp)))
+
 	X <- data$X
 	Y <- data$Y
-	fixed[['X']] <- X
-	fixed[['Y']] <- Y
-	try_rogersII <- try(mle2(rogersII_nll, start=start, data=fixed), silent=T) 
+
+	try_rogersII <- try(mle2(rogersII_nll, start=start, data=c(fixed, list('X'=X, 'Y'=Y))), silent=T) 
 	## Remove 'silent=T' for more verbose output
 	# Hard coded upper limits: TODO: Fix this, allow variable data
 	if (inherits(try_rogersII, "try-error") || as.numeric(coef(try_rogersII)['a']) > 10 || as.numeric(coef(try_rogersII)['h']) > 1){
  		# The fit failed...
- 		out = c(NA, NA, NA, NA, samp)
- 		names(out) <- c('a', 'avar', 'h', 'hvar', rep('', times=length(samp)))
  		if(boot){
  			return(out)
         } else {
  			stop(try_rogersII[1])
  		}
  	} else {
- 		out = c(coef(try_rogersII)['a'], vcov(try_rogersII)['a', 'a'], coef(try_rogersII)['h'], vcov(try_rogersII)['h', 'h'], samp)
-         names(out) <- c('a', 'avar', 'h', 'hvar', rep('', times=length(samp)))
+        # The fit 'worked'
+ 	    for (i in 1:length(names(start))){
+            # Get coefs for fixed variables
+ 	        cname <- names(start)[i]
+            vname <- paste(names(start)[i], 'var', sep='')
+ 	        out[cname] <- coef(try_rogersII)[cname]
+            out[vname] <- vcov(try_rogersII)[cname, cname]
+ 	    }
+ 	    for (i in 1:length(names(fixed))){
+            # Add fixed variables to the output
+ 	        cname <- names(fixed)[i]
+ 	        out[cname] <- as.numeric(fixed[cname])
+ 	    }
  		if(boot){
  			return(out)
  		} else {
- 			return(try_rogersII)
+ 			return(list(out=out, fit=try_rogersII))
  		}
  	}
 }	
