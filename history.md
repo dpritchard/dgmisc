@@ -2,6 +2,14 @@
 
 This file documents additional information not yet ported to, nor ever very likely to be ported to, the main R documentation.   
 
+# Package changes
+
+## v. 1.1
+- Start incrementing and reporting version numbers
+- Removed functional response code (now part of [frair][frair])
+
+
+# Specific function history
 
 ## bb_parse.R
 ```
@@ -53,3 +61,4 @@ v. 1.2	2013-03-07 GB
 		Minor change: CJ no longer wants season or year, so have removed!
 ```
 
+[frair]: https://github.com/dpritchard/frair

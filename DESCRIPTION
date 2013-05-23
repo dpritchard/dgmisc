@@ -1,10 +1,10 @@
 Package: dgmisc
 Type: Package
 Title: Miscellaneous R functions for research
-Version: 1.0
+Version: 1.1
 Date: 2013-01-13
 Author: Daniel Pritchard and Gretchen Brownstein
 Maintainer: Daniel Pritchard <daniel@pritchard.co>
 Description: This package provides a vehicle for documenting, distributing and maintaining otherwise disjointed bits of code used for research.   
-Depends: reshape, stringr, emdbook, bbmle, boot
+Depends: reshape, stringr
 License: GPL-2
