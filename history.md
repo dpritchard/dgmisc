@@ -8,6 +8,8 @@ This file documents additional information not yet ported to, nor ever very like
 - Start incrementing and reporting version numbers
 - Removed functional response code (now part of [frair][frair])
 
+## v. 1.2
+- Added error_bar
 
 # Specific function history
 
