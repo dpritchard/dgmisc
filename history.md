@@ -4,6 +4,10 @@ This file documents additional information not yet ported to, nor ever very like
 
 # Package changes
 
+## v. 1.3
+- Added ecofind and associated methods
+- We now depend (again) on vegan
+
 ## v. 1.2
 - Added error_bar
 
