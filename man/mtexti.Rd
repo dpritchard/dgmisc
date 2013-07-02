@@ -6,7 +6,7 @@
 
 \usage{
 mtexti(text, side, off = 0.25, 
-        srt = if(side == 2) 90  else if(side == 4) 270 else 0,
+        srt = if(side == 2) 90 else if(side == 4) 270 else 0,
         ...)
 }
 
