@@ -24,10 +24,12 @@ TODO
 TODO
 }
 \references{
-\url{http://biostatmatt.com/archives/2522}
+
 }
 \author{
-Orginal version by Matt?. Modifed by Dan and Gretchen.
+Orginal version from here: \url{http://biostatmatt.com/archives/2522}. 
+
+Incorporated here by Daniel and Gretchen as a learning exercise.
 }
 
 \seealso{

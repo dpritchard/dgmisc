@@ -15,8 +15,11 @@ error_bar(x, y, upper, lower=upper, length=0.05, dir='y',...)
   \item{dir }{A string. The direction of the error bars (either 'x' or 'y')}
   \item{\ldots }{Additional arguments passed to \code{\link{arrows}}}
 }
+
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+Note that \code{upper} and \code{lower} are added / substracted from y (or x, depending on direction). So a smart call to error_bar might be:
+
+error_bar(x,y,sd(y))
 }
 
 \references{
