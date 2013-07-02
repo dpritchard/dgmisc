@@ -4,6 +4,9 @@ This file documents additional information not yet ported to, nor ever very like
 
 # Package changes
 
+## v. 1.3-2
+- Addition of mtexti function and beginning of DG collaboration.
+
 ## v. 1.3-1
 - Significant changes to plotting of ecofind objects
 - To accomodate plotting changes we now:
