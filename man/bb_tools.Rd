@@ -1,13 +1,16 @@
 \name{bb_tools}
 \alias{bb_tools}
+\alias{bb_read}
 \alias{bb_parse}
 \alias{bb_plot_ca}
 \alias{bb_plot_spp_rich}
 
 \title{CMLR Braun Blanquet Tools}
-\description{A collection of tools for parsing and plotting Braun Blanquet (BB) condition and abundance data from the CMLR database.}
+\description{A collection of tools for compiling, parsing and plotting Braun Blanquet (BB) condition and abundance data from the CMLR database.}
 
 \usage{
+bb_read(file, survey_year=NA, survey_season=NA)
+
 bb_parse(raw_bb, verbose = TRUE, log = FALSE)
 
 bb_plot_ca(parsed_bb, samp_unit = NA, plot_to = 'screen', 
@@ -18,6 +21,9 @@ bb_plot_spp_rich(parsed_bb, samp_unit = NA, samp_year = NA,
 }
 
 \arguments{
+  \item{file }{A string specifying a filename to read and process.}
+  \item{survey_year }{An interger. What year was the survey carried out, eg 2013}
+  \item{survey_season }{A character string. What season was the survey carried out, eg "Summer" }
   \item{raw_bb }{A dataframe read directly from a \code{.csv} file from the CMLR database.  See details.}
   \item{verbose }{A logical. Should output be printed to screen?}
   \item{log }{A logical. Should output be logged to file?}
@@ -29,6 +35,20 @@ bb_plot_spp_rich(parsed_bb, samp_unit = NA, samp_year = NA,
 }
 
 \details{
+\code{bb_read} takes data-forms filled out in the field and returns the information they contain in a sensible long-format dataframe.  
+   Importantly, \strong{the file must have 6 rows of metadata.} If it doesn't this function will produce unpredictable results (probably an error).
+   Several internal checks must be passed for the function to run.  A failure of these checks will print an error to screen detailing the file and the error.  Currently these check cannot be circumvented.  The specific tests that must be passed are (in order):
+   \itemize{
+   \item First column of data must be strings and must not be blank. They are assumed to be the FieldName (unlike \code{pim_read} the ScientificName is added after the field files are compiled).
+   \item If there is something in the first column (\emph{i.e.} a species) then this must have data associated with it at some point in the file.  
+   \item If there are data in a row, it must have at the first two columns filled out (\emph{i.e.} it must have a FieldName or Presence tick associated with it.).
+   \item The Presence, Abundance and Condition columns can not be blank.
+   \item The first two columns must be read by R as strings (\emph{i.e.} they cannot be all numeric codes).  If they are deemed to be numeric values then this is perceived as an error.  
+   \item Cell A2 must look something like the phrase 'Sampling Unit' and cell B2 cannot be blank.
+   \item Cell A3 must look something like the word 'Date' and cell B3 cannot be blank.
+   \item Cell A4 must look something like the word 'Assessor' and cell B4 cannot be blank.  
+   \item Cell A5 must look something like the phrase 'Transect No.' and cell B5 must be able to be coerced to an integer.
+}
 At a minimum \code{raw_bb} must contain columns named: 
 
 \code{Year},  \code{Season},  \code{Date},  \code{Scientific.Name},  \code{Modified.Braun.Blanquet.Cover.Abundance.Score..1.7.}  and  \code{Condition.Score..1.5.}.  

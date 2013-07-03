@@ -1,3 +1,129 @@
+#bb_read v 1.0
+bb_read<-function(file, survey_year=NA, survey_season=NA){
+    require(stringr)
+    #get a field data
+    datacore <- read.csv(file=file, skip=6, stringsAsFactors=F)
+    #get field metadata
+    datameta <- read.csv(file=file, nrows=6,stringsAsFactors=F)
+    
+    # First column needs to be strings (should be species names!)
+    if(!is.character(datacore[,1])) {
+        stop(cat(file,': First column of data are not strings. They really need to be species names.', sep=''))
+    }
+    #checking that presence column has data
+    bp<- length(datacore[,2])
+    
+    if(bp==0){
+        stop(cat(file,": The presence column is blank, you are missing some key data.", sep=''))
+    }
+    
+    #and checking that if presence=1, then there is abundance data
+    abund<-which(datacore[,3]!='')
+    pres<-which(datacore[,2]!='')
+    
+    if(!length(abund)==length(pres)){
+        stop(cat(file,": Blank rows. May be missing presence or abundance data?", sep=''))
+    }
+    
+    #dropping rowing with no species names 
+    if(any(datacore[,1]=='')) {
+        stop(cat(file,': There are blanks in the first column. May be missing species names?', sep=''))
+    }
+    
+    nbr<-which(datacore[,1]!='')
+    
+    if(!length(nbr)==max(nbr)){
+        stop(cat(file,": Blank rows. May be missing species names?", sep=''))
+    }
+    
+    br<-which(datacore[,1]==''| datacore[,2]=='' )
+    
+    #checking that dropped rows didn't contain data
+    if(all(is.na(datacore[br,3:4]))){
+        stop(cat(file,": Data exist without a species name or presence tick", sep=''))
+    }
+    
+    data_nb <- datacore[pres,]
+    
+    #finding the columns with no data
+    data_spp <- data_nb[,3:4]
+    nbc<-as.integer(which(colSums(!is.na(data_spp))>0))
+    
+    if(!length(nbc)==max(nbc)){
+        stop(cat(file,": Either (or both) abundance or condition column is blank, you are missing some key data.", sep=''))
+    }
+    
+    #index out only non-blank rows and columns
+    dat <- cbind(data_nb[,1], data_spp[,nbc], data_nb[,7])
+    
+    #cleaning metadata
+    if(!is.character(datameta[,1]) & !is.character(datameta[,2])) {
+        stop(cat(file,': First two columns of metadata are not strings. They really should be.', sep=''))
+    }
+    
+    # Testing for presences of valid 'Sampling Unit' info
+    if(!str_detect(tolower(str_trim(datameta[1,1])), '^samp')){
+        stop(cat(file,": Metadata missing header 'Sampling unit' "))
+    }
+    
+    if(str_trim(datameta[1,2])==''){
+        stop(cat(file,": Metadata missing sampling unit name."))
+    }
+    
+    # Testing for presences of valid 'Date' info
+    if(!str_detect(tolower(str_trim(datameta[2,1])), '^date')){
+        stop(cat(file,": Metadata missing header 'Date' "))
+    }
+    
+    if(str_trim(datameta[2,2])==''){
+        stop(cat(file,": Metadata missing date."))
+    }
+    
+    # Testing for presences of valid 'Assessor' info
+    if(!str_detect(tolower(str_trim(datameta[3,1])), '^ass')){
+        stop(cat(file,": Metadata missing header 'Assessor'."))
+    }
+    
+    if(str_trim(datameta[3,2])==''){
+        stop(cat(file,": Metadata missing sampling assessor name."))
+    }
+    
+    
+    
+    ## All datachecks done. Now construct output
+    out = NULL
+    datout = NULL
+    metadatout = NULL
+    
+    outsamp_year <- survey_year
+    outsamp_season <- survey_season
+    outmeth <- 'BB'
+    outmsu <- str_trim(datameta[1,2])
+    outmdate <- str_trim(datameta[2,2])
+    outmass <- str_trim(datameta[3,2])
+    
+    metadataout <- data.frame('Year' = outsamp_year, 'Season' = outsamp_season,'Method Code' = outmeth, 'Sampling Unit ID' = outmsu, 'Start Date (MM/DD/YYYY)' = outmdate, 'Assessor'= outmass, stringsAsFactors=F)
+    
+    outnrow <- nrow(dat)
+    outsamp_year <- rep(survey_year, times=outnrow)
+    outsamp_season <-rep(survey_season, times=outnrow)
+    outmeth <- rep('BB', times=outnrow)
+    outsu <- rep(outmsu, times=outnrow)
+    outdate <- rep(outmdate, times=outnrow)
+    outass <- rep(outmass, times=outnrow)
+    
+    outoldspp <- dat[,1]
+    outabund <- dat[,2]
+    outcond <- dat[,3]
+    outnote <- dat[,4]
+    
+    datout <- data.frame('Year' = outsamp_year,'Season' = outsamp_season,  'Method Code' = outmeth, 'Start Date (MM/DD/YYYY)' = outdate, 'Sampling Unit ID' = outsu, 'Assessors' = outass,'Field Name' = outoldspp, 'Modified Braun-Blanquet Cover/Abundance Score (1-7)' = outabund,  'Condition Score (1-5)' = outcond,'Comments'= outnote, stringsAsFactors=F)
+    
+    out <- list('metadata' = metadataout, 'data' = datout)
+    
+    return(out)
+}
+
 # bb_parse v 1.2
 bb_parse <- function(raw_bb, verbose=TRUE, log=FALSE) {
 	## Check all required columns are present
