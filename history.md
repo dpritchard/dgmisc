@@ -4,6 +4,9 @@ This file documents additional information not yet ported to, nor ever very like
 
 # Package changes
 
+## v. 1.3-3
+- Addition of bb_read function to the bb tool set.
+
 ## v. 1.3-2
 - Addition of mtexti function and beginning of DG collaboration.
 
@@ -25,6 +28,10 @@ This file documents additional information not yet ported to, nor ever very like
 - Removed functional response code (now part of [frair][frair])
 
 # Specific function history
+
+## bb_read.R
+v. 1.0  2013-07-03, GB and DP
+        Initial development.
 
 ## bb_parse.R
 ```
