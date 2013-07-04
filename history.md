@@ -41,6 +41,8 @@ v. 1.1	2013-01-14, DP
 		Major refactoring for package.  Name change from parse.bb.ca.
 v. 1.2	2013-03-13, GB
 		Updated the column name for 'Date' (closes issue #2).
+v. 1.3  2013-07-04 GB
+        Updated the column name for 'Date' (again) and modified the function to take the new YYYY/MM/DD date format
 ```
 
 ## bb_plot_ca.R
