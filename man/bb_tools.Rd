@@ -41,19 +41,18 @@ bb_plot_spp_rich(parsed_bb, samp_unit = NA, samp_year = NA,
    \itemize{
    \item First column of data must be strings and must not be blank. They are assumed to be the FieldName (unlike \code{pim_read} the ScientificName is added after the field files are compiled).
    \item If there is something in the first column (\emph{i.e.} a species) then this must have data associated with it at some point in the file.  
-   \item If there are data in a row, it must have at the first two columns filled out (\emph{i.e.} it must have a FieldName or Presence tick associated with it.).
+   \item If there are data in a row, it must have at the first two columns filled out (\emph{i.e.} it must have a FieldName and Presence tick associated with it.).
    \item The Presence, Abundance and Condition columns can not be blank.
-   \item The first two columns must be read by R as strings (\emph{i.e.} they cannot be all numeric codes).  If they are deemed to be numeric values then this is perceived as an error.  
+   \item The first column must be read by R as strings (\emph{i.e.} it cannot be all numeric codes).  If they are deemed to be numeric values then this is perceived as an error.  
    \item Cell A2 must look something like the phrase 'Sampling Unit' and cell B2 cannot be blank.
    \item Cell A3 must look something like the word 'Date' and cell B3 cannot be blank.
    \item Cell A4 must look something like the word 'Assessor' and cell B4 cannot be blank.  
-   \item Cell A5 must look something like the phrase 'Transect No.' and cell B5 must be able to be coerced to an integer.
 }
 At a minimum \code{raw_bb} must contain columns named: 
 
-\code{Year},  \code{Season},  \code{Date},  \code{Scientific.Name},  \code{Modified.Braun.Blanquet.Cover.Abundance.Score..1.7.}  and  \code{Condition.Score..1.5.}.  
+\code{Year},  \code{Season},  \code{Start Date (YYYY/MM/DD)},  \code{Scientific.Name},  \code{Modified.Braun.Blanquet.Cover.Abundance.Score..1.7.}  and  \code{Condition.Score..1.5.}.  
 
-This is consistent with raw data extracted from the CMLR database on 30/12/2012.  
+This is consistent with raw data extracted from the CMLR database on 05/07/2013.  
 
 \code{parsed_bb} should be the dataframe returned by \code{bb_parse}.  Note that \code{bb_parse} returns a named list, not a dataframe (see below).  The data required by the plotting functions is stored in the first slot, named \code{parsed_bb}.  See the example for guidance on how to access it. 
 
@@ -65,6 +64,9 @@ Currently the dates required when \code{disturbance=TRUE} are not available in t
 }
 
 \value{
+\code{bb_read } returns a named list containing:
+    \item{metadata }{A dataframe with columns 'SamplingUnit', 'Date' and 'Assessor'.  Contains a single row.}
+	\item{data }{A long-format dataframe with columns 'Date', 'Assessor', 'SamplingUnit', 'FieldName', 'Modified Braun-Blanquet Cover/Abundance Score (1-7)',  'Condition Score (1-5)','Comments'.  Contains a row for each species.}
 \code{bb_parse} returns a named list containing:
 	\item{parsed_bb }{A dataframe of class 'parsed.bb' with columns named: \code{Year},  \code{Season},  \code{Date},  \code{SampUnit},  \code{Species},  \code{Abund},  \code{Cond},  \code{RDate},  \code{SeasonYear},  \code{HasNonzeroCond},  \code{HasNonzeroAbund}.}
 	\item{cond_abund_info }{A matrix containing useful information about the raw dataset.}
