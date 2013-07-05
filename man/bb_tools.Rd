@@ -51,9 +51,9 @@ bb_plot_spp_rich(parsed_bb, samp_unit = NA, samp_year = NA,
 }
 At a minimum \code{raw_bb} must contain columns named: 
 
-\code{Year},  \code{Season},  \code{Start.Date..YYYY.MM.DD.},  \code{Scientific.Name}, \code{Sampling.Unit.ID} \code{Modified.Braun.Blanquet.Cover.Abundance.Score..1.7.}  and  \code{Condition.Score..1.5.}.  
+\code{Year},  \code{Season},  \code{Date},  \code{Scientific.Name},  \code{Modified.Braun.Blanquet.Cover.Abundance.Score..1.7.}  and  \code{Condition.Score..1.5.}.  
 
-This is consistent with raw data extracted from the CMLR database on 04/07/2013.  
+This is consistent with raw data extracted from the CMLR database on 30/12/2012.  
 
 \code{parsed_bb} should be the dataframe returned by \code{bb_parse}.  Note that \code{bb_parse} returns a named list, not a dataframe (see below).  The data required by the plotting functions is stored in the first slot, named \code{parsed_bb}.  See the example for guidance on how to access it. 
 
@@ -89,16 +89,6 @@ Daniel Pritchard and Gretchen Brownstein
 # Don't forget to change your working directory before you start (this is where
 # output will go!)
 # 
-# Compile field Data (assumes you want to batch process all csv files in the working directory)
- all_csv <- sort(Sys.glob('*.csv'))
- allmeta = NULL
- alldata = NULL
- for(a in 1:length(all_csv)){
-  print(cat('File number ', a, sep=''))
-  bbout <- bb_read(all_csv[a], samp_year=2013, samp_season='Autumn')
-  alldata <- rbind(alldata, bbout$data)
-  allmeta <- rbind(allmeta, bbout$metadata)
-}
 # Read Data
 # Assumes data is extracted from the CMLR database. Developed with data extracted on
 # 2012-12-30
