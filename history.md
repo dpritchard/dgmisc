@@ -6,6 +6,7 @@ This file documents additional information not yet ported to, nor ever very like
 
 ## v. 1.3-3
 - Addition of bb_read function to the bb tool set.
+- Addition of pim_parse and pim_sum functions to pim tool set.
 
 ## v. 1.3-2
 - Addition of mtexti function and beginning of DG collaboration.
@@ -81,6 +82,20 @@ v. 1.2	2013-03-07 GB
 		7/03/13
 		Corrected the output: Species/steps now match with strata/condition!
 		Minor change: CJ no longer wants season or year, so have removed!
+v. 1.3  2013-07-05 GB
+        Have put season and year back in!! And changed the date column name to YYYY/MM/DD
 ```
 
+## pim_parse.R
+```
+v. 1.0  2013-07-05, GB and DP
+        Initial development. 
+
+```
+## pim_sum.R
+```
+v. 1.0  2013-07-05, GB and DP
+        takes a dataframe in the form output from the pim_parse function 
+        outputs a dataframe summarising the pim data by sampling unit (species frequencies and mean condition).
+```
 [frair]: https://github.com/dpritchard/frair

@@ -93,7 +93,7 @@ Daniel Pritchard and Gretchen Brownstein
 # 
 # Read Data
 # Assumes data is extracted from the CMLR database. Developed with data extracted on
-# 2012-12-30
+# 2013-07-05
 # Choose a '.csv' file with only 1 site:
 bb_data<-read.csv(file=file.choose())
 #  Choose a '.csv' file with multiple sites.
