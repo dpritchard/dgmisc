@@ -50,7 +50,7 @@ bb_plot_spp_rich(parsed_bb, samp_unit = NA, samp_year = NA,
 }
 At a minimum \code{raw_bb} must contain columns named: 
 
-\code{Year},  \code{Season},  \code{Start Date (YYYY/MM/DD)},  \code{Scientific.Name},  \code{Modified.Braun.Blanquet.Cover.Abundance.Score..1.7.}  and  \code{Condition.Score..1.5.}.  
+\code{Year},  \code{Season},  \code{Start.Date..YYYY.MM.DD.},  \code{Scientific.Name},  \code{Modified.Braun.Blanquet.Cover.Abundance.Score..1.7.}  and  \code{Condition.Score..1.5.}.  
 
 This is consistent with raw data extracted from the CMLR database on 05/07/2013.  
 

@@ -7,6 +7,10 @@ This file documents additional information not yet ported to, nor ever very like
 ## v. 1.3-3
 - Addition of bb_read function to the bb tool set.
 - Addition of pim_parse and pim_sum functions to pim tool set.
+- pim_parse now returns a classed variable (parsed.pim)
+- pim_sum now expectes a classed variable
+- pim_sum now warns if you try to process more than 1 site
+- The PIM and BB tools are now feature-complete.  Test for bugs.
 
 ## v. 1.3-2
 - Addition of mtexti function and beginning of DG collaboration.
@@ -83,7 +87,8 @@ v. 1.2	2013-03-07 GB
 		Corrected the output: Species/steps now match with strata/condition!
 		Minor change: CJ no longer wants season or year, so have removed!
 v. 1.3  2013-07-05 GB
-        Have put season and year back in!! And changed the date column name to YYYY/MM/DD
+		Have put season and year back in!!
+        Changed the date column name to YYYY/MM/DD
 ```
 
 ## pim_parse.R

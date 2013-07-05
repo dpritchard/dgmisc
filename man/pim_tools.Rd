@@ -17,8 +17,8 @@ pim_sum(subunit)
   \item{file }{A string specifying a filename to read and process.}
   \item{samp_year }{An interger. What year was the survey carried out, eg 2013}
   \item{samp_season }{A character string. What season was the survey carried out, eg "Summer" }
-  \item{raw_pim }{A dataframe read directly from a \code{.csv} file from the CMLR database.  See details.}
-  \item{subunit }{The output from \code{pim_parse} containing only one site/plot eg "SSE01".}
+  \item{raw_pim }{A dataframe read directly from a \code{.csv} file from the CMLR database.  See Details.}
+  \item{subunit }{A dataframe of class \code{parsed.pim} (i.e. the output from \code{pim_parse}). See Details.}
 }
 \details{
       
@@ -59,24 +59,26 @@ pim_sum(subunit)
     7 |\tab Field name \tab Scientific name \tab s \tab c \tab s \tab c \cr
     8 |\tab Lept_gran \tab Leptospermum \tab 1 \tab 4 \tab 1 \tab 3 \cr
   }
-For \code{pim_parse} at a minimum \code{raw_bb} must contain columns named: 
+For \code{pim_parse} at a minimum \code{raw_pim} must contain columns named: 
 
-\code{Year},  \code{Season},  \code{Start Date (YYYY/MM/DD)},  \code{Scientific.Name},  \code{Sampling.Unit.ID}, \code{Step}, \code{Stratum}, \code{Condition.Score..1.5.} and  \code{Plot.Transect.Number}.  
+\code{Year},  \code{Season},  \code{Start.Date..YYYY.MM.DD.},  \code{Scientific.Name},  \code{Sampling.Unit.ID}, \code{Step}, \code{Stratum}, \code{Condition.Score..1.5.} and  \code{Plot.Transect.Number}.  
 
 This is consistent with raw data extracted from the CMLR database on 05/07/2013.  
 
-\code{pim_sum} takes the output from \code{pim_parse} one site at a time and returnes a dataframe summarising the pim data by sampling unit (species frequencies and mean condition). See example below for how to do this.
+\code{pim_sum} takes the output from \code{pim_parse} (an error will be thrown otherwise). The function is \emph{intended} to process one site at a time, if more that one site is detected, the function will continue, but a snippy warning is issued. The function returnes a dataframe summarising the pim data by sampling unit (species frequencies and mean condition). See example below for how to do this.
    
 }
 
 \value{
-	Returns a named list with two items:
+	\code{pim_read} returns a named list with two items:
 	\item{metadata }{A dataframe with columns 'SamplingUnit', 'Date', 'Assessor' and 'TransectNo'.  Contains a single row.}
 	\item{data }{A long-format dataframe with columns 'Date', 'Assessor', 'SamplingUnit', 'Transect', 'Step', 'FieldName', 'ScientificName', 'Strata' and 'Condition'.  Contains a row for each data point (i.e. each species at each step).}
 	
-	Items are either strings or numerics.  If required, coercing to factors will need to be done after the data have been read in.
-    \item{parsed_pim }{A dataframe with columns 'Date','SampUnit', 'Transect','Step','Strata','ScientificName' and 'Condition'}
-    \item{outdata }{A dataframe with columns 'Season', 'Year','SamplingUnit', 'Transect', 'Date', 'ScientificName', 'Frequency' and 'MeanCondition'}
+	Items returned by \code{pim_read} are either strings or numerics.  If required, coercing to factors will need to be done after the data have been read in.
+    
+    \code{pim_parse} returns a dataframe of class \code{parsed.pim} with columns 'Date','SampUnit', 'Transect','Step','Strata','ScientificName' and 'Condition'
+    
+    \code{pim_sum} returns dataframe (of no specific class) with columns 'Season', 'Year','SamplingUnit', 'Transect', 'Date', 'ScientificName', 'Frequency' and 'MeanCondition'. 
 }
 
 \author{
