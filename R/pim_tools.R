@@ -208,6 +208,7 @@ pim_parse<- function(raw_pim){
         cat('\n')
         cat('You have one or more strata greater than 12, this seems odd... maybe you should check the data?\n')
     }
+    class(raw_pim_sub) <- c('parsed.pim', class(raw_pim_sub))
     parsed_pim <- raw_pim_sub 
     
     return(parsed_pim)
@@ -215,7 +216,15 @@ pim_parse<- function(raw_pim){
 
 #pim_sum
 pim_sum<-function(subunit){
+    # Check for the right class
+    if (!inherits(subunit,"parsed.pim")) {
+        stop('The input must be parsed data returned by pim_parse()')
+        }
     
+    # Check for one site. Issue snippy if needed.
+    if (length_unique(subunit$SampUnit, verbose=FALSE) > 1) {
+        warning('There is more than one site (Sampling Unit) in the data... Are you sure about this?')
+    }
     
     ## Get summary stats for frequency using the strata:
     # Melt data (using reshape package)
@@ -228,9 +237,8 @@ pim_sum<-function(subunit){
     subM$Strata[nonzero] <- 1
     
     #summarise the number of hits per species:
-    pres_abs <- cast(subM, formula= ScientificName ~., value='Strata', fun=sum)
+    pres_abs <- cast(subM, formula= ScientificName ~., value='Strata', fun.aggregate=sum)
     freq_out <- pres_abs[c(2:length(pres_abs))]
-    
     
     #to get the total number of steps per site:old way
     #steps <- cast(subM, formula=Transect + Step ~ ScientificName, value= 'Strata', fun=sum)
@@ -238,7 +246,8 @@ pim_sum<-function(subunit){
     #the new way:
     steps=NULL
     for(a in unique(subunit$Transect)){
-        transsub<-subset(subunit, Transect==a)
+        transsub<-subunit[subunit$Transect==a,]
+        #transsub<-subset(subunit, Transect==a) # This is bad practice, see ?subset
         y<-max(transsub$Step)
         steps<-rbind(steps, y)
     }  
@@ -250,7 +259,7 @@ pim_sum<-function(subunit){
     
     #to get the mean condition for each species 
     subC<-melt(subunit[,c('Transect','Step','Condition','ScientificName')], id=c('ScientificName','Step','Transect', 'Condition'), na.rm=FALSE)
-    mean_cond<- cast(subC, formula= ScientificName ~., value='Condition', fun=mean, na.rm=TRUE)
+    mean_cond<- cast(subC, formula= ScientificName ~., value='Condition', fun.aggregate=mean, na.rm=TRUE)
     condition <-as.data.frame(mean_cond[[2]])
     names(condition) <- 'Mean_Cond'
     

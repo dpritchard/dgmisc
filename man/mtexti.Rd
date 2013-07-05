@@ -23,11 +23,8 @@ TODO
 \value{
 TODO
 }
-\references{
-
-}
 \author{
-Orginal version from here: \url{http://biostatmatt.com/archives/2522}. 
+Orignal version from here: \url{http://biostatmatt.com/archives/2522}. 
 
 Incorporated here by Daniel and Gretchen as a learning exercise.
 }
