@@ -128,7 +128,7 @@ bb_read<-function(file, survey_year=NA, survey_season=NA){
 bb_parse <- function(raw_bb, verbose=TRUE, log=FALSE) {
 	## Check all required columns are present
 	# NB: If you change this, remeber to change the name reassignment below!
-	req_cols<-c('Year', 'Season', 'Date..mm.dd.yyyy.', 'Sampling.Unit', 'Scientific.Name', 'Modified.Braun.Blanquet.Cover.Abundance.Score..1.7.', 'Condition.Score..1.5.')
+	req_cols<-c('Year', 'Season', 'Start.Date..YYYY.MM.DD.', 'Sampling.Unit.ID', 'Scientific.Name', 'Modified.Braun.Blanquet.Cover.Abundance.Score..1.7.', 'Condition.Score..1.5.')
   	#Check all required columns are present
   	for (a in 1:length(req_cols)) {
     	if (is.na(match(req_cols[a], names(raw_bb)))) {
@@ -143,7 +143,7 @@ bb_parse <- function(raw_bb, verbose=TRUE, log=FALSE) {
   	names(raw_bb_sub)[c(3,4,5,6,7)]<-c('Date', 'SampUnit', 'Species','Abund', 'Cond')
   	
   	# Sorintg out dates
-  	raw_bb_sub$RDate<-as.POSIXct(strptime(raw_bb_sub$Date, '%m/%d/%Y'))
+  	raw_bb_sub$RDate<-as.POSIXct(strptime(raw_bb_sub$Date, '%d/%m/%Y'))
   	if (verbose) {
   		cat('\n')
   		message("The parsing function assumes that 'Date' column is in Month/Day/Year format (this is pretty American though, don't ya think?)")
@@ -534,10 +534,10 @@ bb_plot_spp_rich <- function(parsed_bb, samp_unit=NA, samp_year=NA, plot_to='scr
     }  
   } else {
     if (!is.character(samp_year)) {
-      stop('Sampling year (samp_year) must be a charater string of format "Month Year"')
+      stop('Sampling year (samp_year) must be a charater string of format "Season Year"')
     }
     if (length(samp_year) != 1) {
-  	  stop('Sampling year (samp_year) for bb_plot_spp_rich() must be a single character string of format "Month Year".  See ?bb_plot_spp_rich for details.')
+  	  stop('Sampling year (samp_year) for bb_plot_spp_rich() must be a single character string of format "Season Year".  See ?bb_plot_spp_rich for details.')
   	}
     if (is.na(match(samp_year, unique(parsed_bb$SeasonYear)))) { 
       stop('Sampling year (samp_year) was supplied but is not actually in the data!')

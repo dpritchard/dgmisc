@@ -1,17 +1,27 @@
 \name{pim_tools}
+\alias{pim_tools}
 \alias{pim_read}
+\alias{pim_parse}
+\alias{pim_sum}
 
 \title{CMLR Point Intercept Method Tools}
 \description{A collection of tools for dealing with Point Intercept Method (PIM) data.}
 
-\usage{pim_read(file)}
+\usage{
+pim_read(file, samp_year=NA, samp_season=NA)
+pim_parse(raw_pim)
+pim_sum(subunit)
+}
 
 \arguments{
   \item{file }{A string specifying a filename to read and process.}
+  \item{samp_year }{An interger. What year was the survey carried out, eg 2013}
+  \item{samp_season }{A character string. What season was the survey carried out, eg "Summer" }
+  \item{raw_pim }{A dataframe read directly from a \code{.csv} file from the CMLR database.  See details.}
+  \item{subunit }{The output from \code{pim_parse} containing only one site/plot eg "SSE01".}
 }
 \details{
-   Currently this toolbox contains just one function: \code{pim_read}.
-   
+      
    \code{pim_read} takes data-forms filled out in the field and returns the information they contain in a sensible long-format dataframe.  
    
    Importantly, \strong{the file must have 6 rows of metadata.} If it doesn't this function will produce unpredictable results (probably an error).
@@ -49,7 +59,13 @@
     7 |\tab Field name \tab Scientific name \tab s \tab c \tab s \tab c \cr
     8 |\tab Lept_gran \tab Leptospermum \tab 1 \tab 4 \tab 1 \tab 3 \cr
   }
-   
+For \code{pim_parse} at a minimum \code{raw_bb} must contain columns named: 
+
+\code{Year},  \code{Season},  \code{Start Date (YYYY/MM/DD)},  \code{Scientific.Name},  \code{Sampling.Unit.ID}, \code{Step}, \code{Stratum}, \code{Condition.Score..1.5.} and  \code{Plot.Transect.Number}.  
+
+This is consistent with raw data extracted from the CMLR database on 05/07/2013.  
+
+\code{pim_sum} takes the output from \code{pim_parse} one site at a time and returnes a dataframe summarising the pim data by sampling unit (species frequencies and mean condition). See example below for how to do this.
    
 }
 
@@ -58,7 +74,9 @@
 	\item{metadata }{A dataframe with columns 'SamplingUnit', 'Date', 'Assessor' and 'TransectNo'.  Contains a single row.}
 	\item{data }{A long-format dataframe with columns 'Date', 'Assessor', 'SamplingUnit', 'Transect', 'Step', 'FieldName', 'ScientificName', 'Strata' and 'Condition'.  Contains a row for each data point (i.e. each species at each step).}
 	
-	Items are either strings or numerics.  If required, coercing to factors will need to be done after the data have been read in.  
+	Items are either strings or numerics.  If required, coercing to factors will need to be done after the data have been read in.
+    \item{parsed_pim }{A dataframe with columns 'Date','SampUnit', 'Transect','Step','Strata','ScientificName' and 'Condition'}
+    \item{outdata }{A dataframe with columns 'Season', 'Year','SamplingUnit', 'Transect', 'Date', 'ScientificName', 'Frequency' and 'MeanCondition'}
 }
 
 \author{
@@ -91,5 +109,36 @@ for(a in 1:length(all_csv)){
     pimout <- pim_read(all_csv[a])
     alldata <- rbind(alldata, pimout$data)
     allmeta <- rbind(allmeta, pimout$metadata)
-}}
 }
+
+# Read Data
+# Assumes data is extracted from the CMLR database. Developed with data extracted on
+# 2013-07-05
+
+pim_data<-read.csv(file=file.choose())
+parsed_data<-pim_parse(pim_data)
+
+#this is to run pim_sum (and set working directory to where you want the file to end up), this sums all transects together for a plot
+
+summary_pim = NULL
+
+for(a in unique(parsed_data$seasonyearsu)){
+  print(cat('season-year-SamplingUnit', a, sep=' '))
+  subunit<- subset(parsed_data, seasonyearsu== a )
+  pimsum<-pim_sum(subunit)
+  summary_pim<-rbind(summary_pim, pimsum)
+}
+
+# To sum each transect indiviually, do this:
+
+parsed_data$site_trans <-paste(parsed_data$seasonyearsu, parsed_data$Transect) #makes new id
+
+summary_pim = NULL
+
+for(a in unique(parsed_data$site_trans)){
+  print(cat('season-year-SamplingUnit', a, sep=' '))
+  subunit<- subset(parsed_data, site_trans== a )
+  pimsum<-pim_sum(subunit)
+  summary_pim<-rbind(summary_pim, pimsum)
+}
+}}
