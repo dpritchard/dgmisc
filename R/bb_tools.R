@@ -37,9 +37,11 @@ bb_read<-function(file, survey_year=NA, survey_season=NA){
     }
     
     br<-which(datacore[,1]==''| datacore[,2]=='' )
+    bd<-which(datacore[,3]==''& datacore[,4]=='' )
+    datacore[bd,3:4]<-NA
     
     #checking that dropped rows didn't contain data
-    if(all(is.na(datacore[br,3:4]))){
+    if(!all(is.na(datacore[br,3:4]))){
         stop(cat(file,": Data exist without a species name or presence tick", sep=''))
     }
     
