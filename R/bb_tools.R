@@ -145,7 +145,7 @@ bb_parse <- function(raw_bb, verbose=TRUE, log=FALSE) {
   	names(raw_bb_sub)[c(3,4,5,6,7)]<-c('Date', 'SampUnit', 'Species','Abund', 'Cond')
   	
   	# Sorintg out dates
-  	raw_bb_sub$RDate<-as.POSIXct(strptime(raw_bb_sub$Date, '%d/%m/%Y'))
+  	raw_bb_sub$RDate<-as.POSIXct(strptime(raw_bb_sub$Date, '%Y/%m/%d'))
   	if (verbose) {
   		cat('\n')
   		message("The parsing function assumes that 'Date' column is in Month/Day/Year format (this is pretty American though, don't ya think?)")
