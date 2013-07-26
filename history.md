@@ -37,6 +37,7 @@ This file documents additional information not yet ported to, nor ever very like
 ## bb_read.R
 v. 1.0  2013-07-03, GB and DP
         Initial development.
+        fixed issue with finding data without species name or presence tick
 
 ## bb_parse.R
 ```

@@ -37,9 +37,11 @@ bb_read<-function(file, survey_year=NA, survey_season=NA){
     }
     
     br<-which(datacore[,1]==''| datacore[,2]=='' )
+    bd<-which(datacore[,3]==''& datacore[,4]=='' )
+    datacore[bd,3:4]<-NA
     
     #checking that dropped rows didn't contain data
-    if(all(is.na(datacore[br,3:4]))){
+    if(!all(is.na(datacore[br,3:4]))){
         stop(cat(file,": Data exist without a species name or presence tick", sep=''))
     }
     
@@ -361,12 +363,18 @@ bb_plot_ca <- function(parsed_bb, samp_unit=NA, plot_to='screen', verbose=TRUE, 
   # Assuming that is all OK, subset by sampling unit
   parsed_bb_sampunit <- parsed_bb[parsed_bb$SampUnit==samp_unit,]
   ## -- ##
-
+  
+  if(sum(parsed_bb_sampunit$HasNonzeroCond)==0){
+      # There be no conditions! These aren't the data your looking for... Move along... Move along...
+      warning(paste0(samp_unit, ' has no condition data... We are going to ignore this site entierly and move on.'))
+      return()
+  }
+  
   ## Subset data for plotting ##
   ## Get data that are in the required sampling unit and have non-NA condition scores:
   parsed_bb_sub<-parsed_bb_sampunit[parsed_bb_sampunit$HasNonzeroCond,]
   ## -- ##
-
+  
   ## NB: Data should be OK to plot (though it might still be bullshit, but that's OK)
   
   ## Get summary stats:
