@@ -145,7 +145,7 @@ bb_parse <- function(raw_bb, verbose=TRUE, log=FALSE) {
   	names(raw_bb_sub)[c(3,4,5,6,7)]<-c('Date', 'SampUnit', 'Species','Abund', 'Cond')
   	
   	# Sorintg out dates
-  	raw_bb_sub$RDate<-as.POSIXct(strptime(raw_bb_sub$Date, '%Y/%m/%d'))
+  	raw_bb_sub$RDate<-as.POSIXct(strptime(raw_bb_sub$Date, '%d/%m/%Y'))
   	if (verbose) {
   		cat('\n')
   		message("The parsing function assumes that 'Date' column is in Month/Day/Year format (this is pretty American though, don't ya think?)")
@@ -363,12 +363,18 @@ bb_plot_ca <- function(parsed_bb, samp_unit=NA, plot_to='screen', verbose=TRUE, 
   # Assuming that is all OK, subset by sampling unit
   parsed_bb_sampunit <- parsed_bb[parsed_bb$SampUnit==samp_unit,]
   ## -- ##
-
+  
+  if(sum(parsed_bb_sampunit$HasNonzeroCond)==0){
+      # There be no conditions! These aren't the data your looking for... Move along... Move along...
+      warning(paste0(samp_unit, ' has no condition data... We are going to ignore this site entierly and move on.'))
+      return()
+  }
+  
   ## Subset data for plotting ##
   ## Get data that are in the required sampling unit and have non-NA condition scores:
   parsed_bb_sub<-parsed_bb_sampunit[parsed_bb_sampunit$HasNonzeroCond,]
   ## -- ##
-
+  
   ## NB: Data should be OK to plot (though it might still be bullshit, but that's OK)
   
   ## Get summary stats:
