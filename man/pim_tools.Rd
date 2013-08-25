@@ -65,7 +65,7 @@ For \code{pim_parse} at a minimum \code{raw_pim} must contain columns named:
 
 This is consistent with raw data extracted from the CMLR database on 05/07/2013.  
 
-\code{pim_sum} takes the output from \code{pim_parse} (an error will be thrown otherwise). The function is \emph{intended} to process one site at a time, if more that one site is detected, the function will continue, but a snippy warning is issued. The function returnes a dataframe summarising the pim data by sampling unit (species frequencies and mean condition). See example below for how to do this.
+\code{pim_sum} takes the output from \code{pim_parse} (an error will be thrown otherwise). The function is \emph{intended} to process one site at a time, if more that one site is detected, the function will continue, but a snippy warning is issued. The function returnes a dataframe summarising the pim data by sampling unit (species frequencies and median condition). See example below for how to do this.
    
 }
 
@@ -78,7 +78,7 @@ This is consistent with raw data extracted from the CMLR database on 05/07/2013.
     
     \code{pim_parse} returns a dataframe of class \code{parsed.pim} with columns 'Date','SampUnit', 'Transect','Step','Strata','ScientificName' and 'Condition'
     
-    \code{pim_sum} returns dataframe (of no specific class) with columns 'Season', 'Year','SamplingUnit', 'Transect', 'Date', 'ScientificName', 'Frequency' and 'MeanCondition'. 
+    \code{pim_sum} returns dataframe (of no specific class) with columns 'Season', 'Year','SamplingUnit', 'Transect', 'Date', 'ScientificName', 'Frequency' and 'MedianCondition'. 
 }
 
 \author{

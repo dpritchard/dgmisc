@@ -10,7 +10,7 @@ This file documents additional information not yet ported to, nor ever very like
 - pim_parse now returns a classed variable (parsed.pim)
 - pim_sum now expectes a classed variable
 - pim_sum now warns if you try to process more than 1 site
-- The PIM and BB tools are now feature-complete.  Test for bugs.
+- The PIM and BB tools are now feature-complete.  Test for bugs. 
 
 ## v. 1.3-2
 - Addition of mtexti function and beginning of DG collaboration.
@@ -103,5 +103,7 @@ v. 1.0  2013-07-05, GB and DP
 v. 1.0  2013-07-05, GB and DP
         takes a dataframe in the form output from the pim_parse function 
         outputs a dataframe summarising the pim data by sampling unit (species frequencies and mean condition).
+v. 1.0  2013-08-25, GB       
+        have changed mean to median condition.
 ```
 [frair]: https://github.com/dpritchard/frair
