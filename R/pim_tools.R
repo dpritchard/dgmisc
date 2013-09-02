@@ -267,7 +267,7 @@ pim_sum<-function(subunit){
         stop('you have issues with the summary stats, check data')
     }
     
-    if(all((as.character(pres_abs[[1]]))!=(as.character(mean_cond[[1]])))){
+    if(all((as.character(pres_abs[[1]]))!=(as.character(median_cond[[1]])))){
         stop('you have issues with the summary stats, check data')
     }
     
