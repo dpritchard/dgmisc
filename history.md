@@ -3,6 +3,8 @@
 This file documents additional information not yet ported to, nor ever very likely to be ported to, the main R documentation.   
 
 # Package changes
+## v. 1.3-4
+- pfs_tools: Tools for reading and parsing MIKE by DHI PFS files (specifically *.ecolab files)
 
 ## v. 1.3-3
 - Addition of bb_read function to the bb tool set.
