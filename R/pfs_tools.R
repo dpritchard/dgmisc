@@ -1,6 +1,6 @@
-require(stringr)
-require(XML)
-
+# Tools for PFS files and ecolab files
+# TODO:
+# renumber IDs in ecolab files?
 pfs_read <- function(filename=NULL){
 	if(is.null(filename)){
 		stop('Can be empty')
@@ -8,8 +8,8 @@ pfs_read <- function(filename=NULL){
 	fid <- file(filename,'r');
 	# Check fid here
 	pfs <- pfs_readsec(fid)
-	if(sum(str_count(names(pfs$MAIN), 'ECO_LAB_SETUP'))>0){
-		class(pfs) <- c('ECOLAB', class(pfs))
+	if(sum(str_count(names(pfs), 'ECO_LAB_SETUP'))>0){
+		class(pfs) <- c('ecolab', class(pfs))
 	} else {
 		class(pfs) <- c('pfs', class(pfs))
 	}
@@ -70,7 +70,7 @@ pfs_readsec <- function(fid, nline=0){
 		#pfsinfo$MAIN <- c(pfsinfo$MAIN, keyval)
 		pfsinfo$MAIN$PFS_DATA <- c(pfsinfo$MAIN$PFS_DATA, keyval)
 	}
-	return(pfsinfo)
+	return(pfsinfo[[1]])
 }
 
 pfs_dequote <- function(string){
@@ -79,96 +79,78 @@ pfs_dequote <- function(string){
 	return(string)
 }
 
-print.ECOLAB <- function(pfsobj, misc=T, sveq=F, ...){
-	sec <- names(pfsobj[[c('MAIN', 'ECO_LAB_SETUP')]])
-	if(any(sec=='PFS_DATA')){
-		sec <- sec[-which(sec=='PFS_DATA')]
-	}
-	if(!misc){
-		sec <- sec[-which(sec=='MISC')]
-	}
-	if(!sveq){
-		sec <- sec[-which(sec=='STATE_VARIABLE_EQUATIONS')]
-	}
-	prout <- matrix(nrow=length(sec), dimnames=list(sec, 'NumItems'))
-	for(a in 1:length(sec)){
-		onesec <- names(pfsobj[[c('MAIN', 'ECO_LAB_SETUP', sec[a])]])
-		if(any(onesec=='PFS_DATA')){
-			onesec <- onesec[-which(onesec=='PFS_DATA')]
-		}
-		prout[a,1] <- length(onesec)
-	}
-	print(prout, ...)
-	
+print.pfs <- function(pfsobj, ...){
+    cat('MIKE by DHI PFS Object\n')
+    cat('Be aware that although this function works with many PFS-files,\n')
+    cat('only ECOLab files are currently supported\n')
 }
 
-pfs_get <- function(pfsobj, type=c('sv', 'c', 'f', 'av', 'p', 'do')){
-	out <- NULL
-	if(any(type %in% c('all', 'sv'))){
-		svs <- pfsobj[[c('MAIN', 'ECO_LAB_SETUP', 'STATE_VARIABLES')]]
-		svs <- pfs_tryget(svs)
-		sveq <- pfsobj[[c('MAIN', 'ECO_LAB_SETUP', 'STATE_VARIABLE_EQUATIONS')]]
-		sveq <- pfs_tryget(sveq, issveq=T)
-		svs$Expression <- sveq$Expression[match(svs$Symbol, sveq$Symbol)]
-		if(!is.null(svs)){svs$Type <- 'State Variable'}
-		out <- rbind(out,svs)
-	}
-	if(any(type %in% c('all', 'c'))){
-		cons <- pfsobj[[c('MAIN', 'ECO_LAB_SETUP', 'CONSTANTS')]]
-		cons <- pfs_tryget(cons)
-		if(!is.null(cons)){cons$Type <- 'Constant'}
-		out <- rbind(out,cons)
-	}
-	if(any(type %in% c('all', 'f'))){
-		forc <- pfsobj[[c('MAIN', 'ECO_LAB_SETUP', 'FORCINGS')]]
-		forc <- pfs_tryget(forc)
-		if(!is.null(forc)){forc$Type <- 'Forcing'}
-		out <- rbind(out,forc)
-	}
-	if(any(type %in% c('all', 'av'))){
-		avs <- pfsobj[[c('MAIN', 'ECO_LAB_SETUP', 'AUXILIARY_VARIABLES')]]
-		avs <- pfs_tryget(avs)
-		if(!is.null(avs)){avs$Type <- 'Auxilary Variable'}
-		out <- rbind(out,avs)
-	}	
-	if(any(type %in% c('all', 'p'))){
-		procs <- pfsobj[[c('MAIN', 'ECO_LAB_SETUP', 'PROCESSES')]]
-		procs <- pfs_tryget(procs)
-		if(!is.null(procs)){procs$Type <- 'Process'}
-		out <- rbind(out,procs)
-	}	
-	if(any(type %in% c('all', 'do'))){
-		dos <- pfsobj[[c('MAIN', 'ECO_LAB_SETUP', 'DERIVED_OUTPUTS')]]
-		dos <- pfs_tryget(dos)
-		if(!is.null(dos)){dos$Type <- 'Derived Output'}
-		out <- rbind(out,dos)
-	}	
-	
-	
-	return(out)
+pfs_write_section <- function(pfs, fid, indent=0, hlevel=NULL) {
+    indent_str <- pfs_indent_str(indent)
+    if(is.null(hlevel)){hlevel <- ''}
+    sec_names_all <- names(pfs)
+    for(a in 1:length(sec_names_all)){
+        sec_name <- sec_names_all[a]
+        if(sec_name=='PFS_DATA'){
+            # If there is a PFS data section, we need to do something slightly different.
+            pfs_write_comment(pfs[[sec_name]], fid, indent, hlevel)
+            pfs_write_keyvals(pfs[[sec_name]], fid, indent, hlevel) 
+        } else {
+            cat('\n', indent_str, '[', sec_name, ']\n', sep='', file=fid)
+            pfs_write_section(pfs[[sec_name]], fid=fid, indent=indent+1, hlevel=sec_name)
+            cat(indent_str, 'EndSect  // ', sec_name, '\n', sep='', file=fid)
+        }
+    }
 }
 
-pfs_tryget <- function(pfsobj, issveq=F){
-	objnms <- names(pfsobj)
-	if(any(objnms=='PFS_DATA')){objnms <- objnms[-which(objnms=='PFS_DATA')]}
-	if(length(objnms)==0){return(NULL)}
-	pfssum <- NULL
-	for(a in 1:length(objnms)){
-		onepfsobj <- pfsobj[[c(objnms[a], 'PFS_DATA')]]
-		pfssumtemp <- data.frame('Type'='-', stringsAsFactors=F)
-		if(issveq){
-			pfssumtemp$Symbol <- names(onepfsobj)
-			pfssumtemp$Expression <- as.character(onepfsobj)
-		} else {
-			pfssumtemp$Symbol <- ifelse(is.null(onepfsobj$SYMBOL), '-', onepfsobj$SYMBOL)
-			pfssumtemp$Default <- ifelse(is.null(onepfsobj$DEFAULT_VALUE), NA, onepfsobj$DEFAULT_VALUE)
-			pfssumtemp$Min <- ifelse(is.null(onepfsobj$MIN_VALUE), NA, onepfsobj$MIN_VALUE)
-			pfssumtemp$Max <- ifelse(is.null(onepfsobj$MAX_VALUE), NA, onepfsobj$MAX_VALUE)
-			pfssumtemp$Expression <- ifelse(is.null(onepfsobj$EXPRESSION), '-', onepfsobj$EXPRESSION)
-			pfssumtemp$Description <- ifelse(is.null(onepfsobj$DESCRIPTION), '-', onepfsobj$DESCRIPTION)
-		}
-		pfssum <- rbind(pfssum, pfssumtemp)
-	}
-	return(pfssum)
+pfs_write_comment <- function(pfs, fid, indent, hlevel){
+    indent_str <- pfs_indent_str(indent)
+    if(!is.null(pfs$PFS_COMMENT)){
+        for(a in 1:length(pfs$PFS_COMMENT)){
+            cat(indent_str, '// ', pfs$PFS_COMMENT[a], '\n', sep='', file=fid)
+        }    
+    }
 }
 
+pfs_write_keyvals <- function(pfs, fid, indent, hlevel){
+    indent_str <- pfs_indent_str(indent)
+    dat_names <- names(pfs)
+    if(!is.null(pfs$PFS_COMMENT)){
+        which_comm <- which(dat_names=='PFS_COMMENT')
+        dat_names <- dat_names[-which_comm]
+    }
+    if(length(dat_names)>0){
+        for(a in 1:length(dat_names)){
+            single_dat <- pfs[[dat_names[a]]]
+            format_val <- pfs_format_val(dat_names[a], single_dat, hlevel)
+            cat(indent_str, dat_names[a], ' = ', format_val, '\n', sep='', file=fid)
+        }	
+    }
+}
+
+pfs_indent_str <- function(indent){
+    if(indent>0){
+        indent_str <- rep('   ', times=indent)
+    } else {
+        indent_str = ''
+    }
+    return(indent_str)
+}
+
+pfs_format_val <- function(key, val, hlevel){
+# PFS FORMAT... 
+# At the moment this too specific to ECOLAB files
+# Also, need to deal with comma separted lists in PFS files (read as vectors? write in correct format)
+# Also pipe "|" delimited file names in PFS files need help
+    if(toupper(key)=='EXPRESSION'){
+        return(str_join("\'\"", as.character(val), "\"\'"))
+    } else if(toupper(key)=='CHECKSUM' && hlevel=='MISC'){
+        return(str_join("\'", as.character(val), "\'")) # Quote the 'CHECKSUM'
+    } else if(str_detect(string=hlevel, pattern='STATE_VARIABLE_EQUATION_')){
+        return(str_join("\'\"", as.character(val), "\"\'"))
+    } else if(is.character(val)){
+        return(str_join("\'", val, "\'"))
+    } else {
+        return(val)
+    }
+}
