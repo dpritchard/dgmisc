@@ -14,7 +14,7 @@ bb_read(file, survey_year=NA, survey_season=NA)
 bb_parse(raw_bb, verbose = TRUE, log = FALSE)
 
 bb_plot_ca(parsed_bb, samp_unit = NA, plot_to = 'screen', 
-	verbose = TRUE, disturbance = FALSE)
+	verbose = TRUE, disturbance = FALSE, DistDates=NULL)
 
 bb_plot_spp_rich(parsed_bb, samp_unit = NA, samp_year = NA, 
 	plot_to = 'screen', verbose = TRUE)
@@ -32,6 +32,7 @@ bb_plot_spp_rich(parsed_bb, samp_unit = NA, samp_year = NA,
   \item{samp_year }{Which sampling season / year combination to plot? A single character string of the format \code{'Season Year'}.}
   \item{plot_to }{To where should the plots be sent? Must be either \code{screen} or \code{png}.}
   \item{disturbance }{A logical. If \code{TRUE} the the user will be prompted for disturbance start and end date(s).}
+  \item{DistDates}{a data frame with the distrubance dates for each site}
 }
 
 \details{

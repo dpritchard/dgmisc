@@ -327,7 +327,7 @@ bb_parse <- function(raw_bb, verbose=TRUE, log=FALSE) {
 }
 
 # bb_plot_ca v. 1.4
-bb_plot_ca <- function(parsed_bb, samp_unit=NA, plot_to='screen', verbose=TRUE, disturbance=FALSE){
+bb_plot_ca <- function(parsed_bb, samp_unit=NA, plot_to='screen', verbose=TRUE, disturbance=FALSE, DistDates=NULL){
   
   require(reshape) 
   
@@ -424,42 +424,41 @@ bb_plot_ca <- function(parsed_bb, samp_unit=NA, plot_to='screen', verbose=TRUE, 
   
   #Add disturbance line/box i.e. mine de-water or undermining dates
   if(disturbance){
-  	cat("\nSampling unit: ", samp_unit, "\n", sep='')
-    cat("Enter total number of disturbances (both mine and water-discharge).  Enter 0 if none:\n")
-    DisNumber<-scan(n=1, what=integer())
-    # Check if DisNumber exisits
-    if(DisNumber==0) {
-    	disturbance = FALSE
-    }
-   }
+      cat("\nSampling unit: ", samp_unit, "\n", sep='')
+      cat("Will now look up number of disturbances (both mine and water-discharge).\n")
+      dd_sampunit <- DistDates[DistDates$Plot==samp_unit,]
+      DisNumber<-dd_sampunit[1,3] 
+      # Check if DisNumber exisits
+      if(DisNumber==0) {
+          disturbance = FALSE
+      }
+  }
   
   if(disturbance){
-    if(DisNumber==1){
-		cat("\n Enter a disturbance start date (yyyy-mm-dd):\n")
-		Sdate<-scan(n=DisNumber, what=character())
-		cat("\n Enter a disturbance end date (yyyy-mm-dd):\n")
-		Edate<-scan(n=DisNumber, what=character())
-    } 
-    
-    if(DisNumber>1) {
-		cat("\n Enter ",DisNumber," disturbance start dates (yyyy-mm-dd):\n", sep='')
-		Sdate<-scan(n=DisNumber, what=character())
-		cat("\n Enter ",DisNumber," disturbance end dates (yyyy-mm-dd):\n", sep='')
-		Edate<-scan(n=DisNumber, what=character())
-    }
-    
-    dateS<-as.POSIXct(strptime(Sdate, '%Y-%m-%d'))
-    dateE<-as.POSIXct(strptime(Edate, '%Y-%m-%d'))
-    
-    date=NULL
-    for(a in c(1:DisNumber)) {
-      date <- c(date, dateS[a], dateS[a], dateE[a], dateE[a], NA)
-    }
-    
-    y<-rep(c(0,5,5,0,NA), times=DisNumber)
-    polygon(date,y, col=rgb(0,0,0,0.2),border=NA, xpd=FALSE)
+      if(DisNumber==1){
+          Sdate <- dd_sampunit[1,4]
+          Edate <- dd_sampunit[1,7]
+      } 
+      
+      if(DisNumber>1) {
+          ds <- DisNumber+3
+          de <- DisNumber+6
+          Sdate <- as.matrix(dd_sampunit[1,4:ds])
+          Edate <- as.matrix(dd_sampunit[1,7:de])
+      }
+      
+      dateS<-as.POSIXct(strptime(Sdate, '%Y-%m-%d'))
+      dateE<-as.POSIXct(strptime(Edate, '%Y-%m-%d'))
+      
+      date=NULL
+      for(a in c(1:DisNumber)) {
+          date <- c(date, dateS[a], dateS[a], dateE[a], dateE[a], NA)
+      }
+      
+      y<-rep(c(0,5,5,0,NA), times=DisNumber)
+      polygon(date,y, col=rgb(0,0,0,0.2),border=NA, xpd=FALSE)
   }
-
+  
   # Add data
   plt_spp <- as.character(unique(parsed_bb_sub$Species))
   for(a in 1:length(plt_spp)){
