@@ -93,7 +93,9 @@ plot.ecofind <- function(x, scaling=0.5, plot_info=TRUE, plot_se=TRUE, plot_cngp
     plotveg[which(plotveg==0, arr.ind=T)] <- NA
     plotveg01[which(plotveg01==0, arr.ind=T)] <- NA
     ## TODO: Colour gradients
-        
+    #pvlog <- log(plotveg)
+    #cols <- rainbow(max(pvlog, na.rm=T))    
+    
     # Order the data
     ## TODO, make this seperate function
     xx <- plotveg01
@@ -113,6 +115,7 @@ plot.ecofind <- function(x, scaling=0.5, plot_info=TRUE, plot_se=TRUE, plot_cngp
     for(a in 1:ncol(plotveg)) {
         ypos <- a*-1
         points(x$dist, xx[,a]*ypos, pch=20)
+        #points(x$dist, xx[,a]*ypos, pch=20, col=cols[ceiling(pvlog[,a])])
     }
         
     # Plot the main title, if set

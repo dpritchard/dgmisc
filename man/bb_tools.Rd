@@ -9,12 +9,12 @@
 \description{A collection of tools for compiling, parsing and plotting Braun Blanquet (BB) condition and abundance data from the CMLR database.}
 
 \usage{
-bb_read(file, survey_year=NA, survey_season=NA)
+bb_read(file, survey_year=NA, survey_season=NA, SciNames=FALSE)
 
 bb_parse(raw_bb, verbose = TRUE, log = FALSE)
 
 bb_plot_ca(parsed_bb, samp_unit = NA, plot_to = 'screen', 
-	verbose = TRUE, disturbance = FALSE)
+	verbose = TRUE, disturbance = FALSE, DistDates=NULL)
 
 bb_plot_spp_rich(parsed_bb, samp_unit = NA, samp_year = NA, 
 	plot_to = 'screen', verbose = TRUE)
@@ -24,6 +24,7 @@ bb_plot_spp_rich(parsed_bb, samp_unit = NA, samp_year = NA,
   \item{file }{A string specifying a filename to read and process.}
   \item{survey_year }{An interger. What year was the survey carried out, eg 2013}
   \item{survey_season }{A character string. What season was the survey carried out, eg "Summer" }
+  \item{SciNames}{A logical. Does the file to be processed contain a 'Scienfic Names' column (see details)}
   \item{raw_bb }{A dataframe read directly from a \code{.csv} file from the CMLR database.  See details.}
   \item{verbose }{A logical. Should output be printed to screen?}
   \item{log }{A logical. Should output be logged to file?}
@@ -32,6 +33,7 @@ bb_plot_spp_rich(parsed_bb, samp_unit = NA, samp_year = NA,
   \item{samp_year }{Which sampling season / year combination to plot? A single character string of the format \code{'Season Year'}.}
   \item{plot_to }{To where should the plots be sent? Must be either \code{screen} or \code{png}.}
   \item{disturbance }{A logical. If \code{TRUE} the the user will be prompted for disturbance start and end date(s).}
+  \item{DistDates}{a data frame with the disturbance dates for each site see the format below}
 }
 
 \details{
@@ -39,14 +41,16 @@ bb_plot_spp_rich(parsed_bb, samp_unit = NA, samp_year = NA,
    Importantly, \strong{the file must have 6 rows of metadata.} If it doesn't this function will produce unpredictable results (probably an error).
    Several internal checks must be passed for the function to run.  A failure of these checks will print an error to screen detailing the file and the error.  Currently these check cannot be circumvented.  The specific tests that must be passed are (in order):
    \itemize{
-   \item First column of data must be strings and must not be blank. They are assumed to be the FieldName (unlike \code{pim_read} the ScientificName is added after the field files are compiled).
+   \item First column of data must be strings and must not be blank. They are assumed to be the FieldName 
+   \item \emph{if} \strong{SciNames = TRUE} The second column is the ScientificName, data must be strings and must not be blank.
    \item If there is something in the first column (\emph{i.e.} a species) then this must have data associated with it at some point in the file.  
    \item If there are data in a row, it must have at the first two columns filled out (\emph{i.e.} it must have a FieldName and Presence tick associated with it.).
    \item The Presence, Abundance and Condition columns can not be blank.
    \item The first column must be read by R as strings (\emph{i.e.} it cannot be all numeric codes).  If they are deemed to be numeric values then this is perceived as an error.  
    \item Cell A2 must look something like the phrase 'Sampling Unit' and cell B2 cannot be blank.
    \item Cell A3 must look something like the word 'Date' and cell B3 cannot be blank.
-   \item Cell A4 must look something like the word 'Assessor' and cell B4 cannot be blank.  
+   \item Cell A4 must look something like the word 'Assessor' and cell B4 cannot be blank. 
+   \item Cell A5 must look something like the word 'Notes' BUT cell B4 does not need to contain anything
 }
 At a minimum \code{raw_bb} must contain columns named: 
 
@@ -60,13 +64,13 @@ If \code{samp_unit} is not supplied, or contains an \code{NA} then the functions
 
 If \code{samp_year} is not supplied then it is extracted from the data.  This only applies to \code{bb_plot_spp_rich} and must result in a single unique result.
 
-Currently the dates required when \code{disturbance=TRUE} are not available in the database. For now, this is an inelegant, and temporary solution to get the job done. 
+Currently the dates required when \code{disturbance=TRUE} are not available in the database. For now, you have the choice of two inelegant and temporary solutions to get the job done. 1) enter the dates by hand when prompted OR 2) provide a data frame to \code{DistDates} with columns in this exact order: \strong{plot} (the name of the plot as given in the database), \strong{Disturbance} (did the plot have a disturbance: Y or N), \strong{DistNumber} (the number of times the plot was harassed, a number 0 to n), columns 4 to 6 give the disturbance start dates (if any) and columns 7 to 9 give the disturbance end dates (if any). If providing a data frame only 3 disturbances per plot are allowed but any number can be entered via method 1 (currently).  
 }
 
 \value{
 \code{bb_read } returns a named list containing:
     \item{metadata }{A dataframe with columns 'SamplingUnit', 'Date' and 'Assessor'.  Contains a single row.}
-	\item{data }{A long-format dataframe with columns 'Date', 'Assessor', 'SamplingUnit', 'FieldName', 'Modified Braun-Blanquet Cover/Abundance Score (1-7)',  'Condition Score (1-5)','Comments'.  Contains a row for each species.}
+	\item{data }{A long-format dataframe with columns 'Date', 'Assessor', 'SamplingUnit', 'FieldName', 'Scientific Name'(if provided), 'Modified Braun-Blanquet Cover/Abundance Score (1-7)',  'Condition Score (1-5)','Comments'.  Contains a row for each species.}
 \code{bb_parse} returns a named list containing:
 	\item{parsed_bb }{A dataframe of class 'parsed.bb' with columns named: \code{Year},  \code{Season},  \code{Date},  \code{SampUnit},  \code{Species},  \code{Abund},  \code{Cond},  \code{RDate},  \code{SeasonYear},  \code{HasNonzeroCond},  \code{HasNonzeroAbund}.}
 	\item{cond_abund_info }{A matrix containing useful information about the raw dataset.}
@@ -98,6 +102,7 @@ Daniel Pritchard and Gretchen Brownstein
 bb_data<-read.csv(file=file.choose())
 #  Choose a '.csv' file with multiple sites.
 bb_data_multi<-read.csv(file=file.choose()) 
+
 
 ## Parse data
 out <- bb_parse(bb_data, verbose=TRUE, log=TRUE)
