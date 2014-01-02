@@ -259,15 +259,15 @@ pim_sum<-function(subunit){
     
     #to get the mean condition for each species 
     subC<-melt(subunit[,c('Transect','Step','Condition','ScientificName')], id=c('ScientificName','Step','Transect', 'Condition'), na.rm=FALSE)
-    mean_cond<- cast(subC, formula= ScientificName ~., value='Condition', fun.aggregate=mean, na.rm=TRUE)
-    condition <-as.data.frame(mean_cond[[2]])
-    names(condition) <- 'Mean_Cond'
+    median_cond<- cast(subC, formula= ScientificName ~., value='Condition', fun.aggregate=median, na.rm=TRUE)
+    condition <-as.data.frame(median_cond[[2]])
+    names(condition) <- 'Median_Cond'
     
     if(length(condition)!=length(frequency)){
         stop('you have issues with the summary stats, check data')
     }
     
-    if(all((as.character(pres_abs[[1]]))!=(as.character(mean_cond[[1]])))){
+    if(all((as.character(pres_abs[[1]]))!=(as.character(median_cond[[1]])))){
         stop('you have issues with the summary stats, check data')
     }
     
@@ -291,7 +291,7 @@ pim_sum<-function(subunit){
     outtran <- rep(outmtran, times=outnrow)
     outdate <- rep(outmdate, times=outnrow)
     
-    outdata<-data.frame('Season'=outsea, 'Year'=outyr,'SamplingUnit'=outsu, 'Transect' = outtran, 'Date'= outdate, 'ScientificName'=outspp, 'Frequency'=outfreq, 'MeanCondition'=outcond, stringsAsFactors=F)
+    outdata<-data.frame('Season'=outsea, 'Year'=outyr,'SamplingUnit'=outsu, 'Transect' = outtran, 'Date'= outdate, 'ScientificName'=outspp, 'Frequency'=outfreq, 'MedianCondition'=outcond, stringsAsFactors=F)
     
     return(outdata)   
 }
